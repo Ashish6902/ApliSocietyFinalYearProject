@@ -1,4 +1,5 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState,useContext } from 'react';
+import  userRoleContext  from "../context/Roles/userRoleContext"; 
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -17,6 +18,10 @@ const NoteItem = ({ Notice, editNotice, deleteNotice }) => {
   const [note, setNote] = useState({ id: Notice._id, title: Notice.title, description: Notice.description, date: Notice.date });
   const refCloseUpdate = useRef(null);
   const refCloseDelete = useRef(null);
+
+  
+  const { role,} = useContext(userRoleContext); 
+
 
   const onChange = (event) => {
     setNote({ ...note, [event.target.name]: event.target.value });
@@ -38,9 +43,11 @@ const NoteItem = ({ Notice, editNotice, deleteNotice }) => {
         <ul className="list-group list-group-flush">
           <li className="list-group-item">{formatDate(Notice.date)} -- ({Notice.title})</li>
           <li className="list-group-item">{Notice.description}</li>
+          {role == "Admin" && (
           <li className="list-group-item">
             <div>
               {/* button to open update modal */}
+              
               <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target={`#updateModal${Notice._id}`}>
                 Update
               </button>
@@ -101,6 +108,7 @@ const NoteItem = ({ Notice, editNotice, deleteNotice }) => {
               </div>
             </div>
           </li>
+          )}
         </ul>
       </div>
     </div>

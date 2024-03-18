@@ -70,9 +70,31 @@ const deleteNotice = async (id) => {
   });
   setNotice(Notice.filter(note => note._id !== id));
 }
+//for user
+const getAllNoticesuser = useCallback(async () => {
+  try {
+    const response = await fetch(`${host}/api/user/fetchnotices`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'auth-token': authToken,
+      },
+    });
+    const json = await response.json();
+    setNotice(json);
+  } catch (error) {
+    console.error('Error fetching notices:', error);
+  }
+}, [authToken, host]);
+
+useEffect(() => {
+  if (authToken) {
+    getAllNoticesuser();
+  }
+}, [authToken, getAllNoticesuser]);
 
   return (
-    <NoticeContext.Provider value={{ Notice,setNotice, getAllNotices, addNotice ,editNotice,deleteNotice}}>
+    <NoticeContext.Provider value={{ Notice,setNotice, getAllNotices, addNotice ,editNotice,deleteNotice,getAllNoticesuser}}>
       {props.children}
     </NoticeContext.Provider>
   );
