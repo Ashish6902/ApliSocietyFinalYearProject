@@ -14,11 +14,13 @@ import CreateTransaction from './pages/AdminPages/CreateTransaction';
 import CreateMembers from './pages/AdminPages/CreateMembers';
 import CreateNotice from './pages/AdminPages/CreateNotice';
 import NoticeState from './context/Notice/NoticeState';
+import MemberState from './context/Members/MemberState';
 
 function App() {
   return (
     <SetRoles>
       <NoticeState>
+      <MemberState>
       <Router>
         <NavBar />
         <Routes>
@@ -36,6 +38,7 @@ function App() {
           </Route>
         </Routes>
       </Router>
+      </MemberState>
       </NoticeState>
     </SetRoles>
   );

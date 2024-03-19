@@ -43,7 +43,7 @@ const NoteItem = ({ Notice, editNotice, deleteNotice }) => {
         <ul className="list-group list-group-flush">
           <li className="list-group-item">{formatDate(Notice.date)} -- ({Notice.title})</li>
           <li className="list-group-item">{Notice.description}</li>
-          {role == "Admin" && (
+          {role === "Admin" && (
           <li className="list-group-item">
             <div>
               {/* button to open update modal */}
@@ -107,6 +107,8 @@ const NoteItem = ({ Notice, editNotice, deleteNotice }) => {
                 </div>
               </div>
             </div>
+
+            
           </li>
           )}
         </ul>

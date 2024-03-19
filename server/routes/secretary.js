@@ -47,8 +47,8 @@ router.post("/addnotice",fetchuser, checkUserRole('Admin'),
     }
   );
 
-//Route 2 : Read  Notice using : get "/api/secretary/fetchnotices --->  Login required
-router.get("/fetchnotices", fetchuser,checkUserRole('Admin'), async (req, res) => {
+//Route 2 : Read  Notice using : get "/api/secretary/fetchnotices --->  Login required user or admin
+router.get("/fetchnotices", fetchuser, async (req, res) => {
   try {
     const notice = await Notice.find();
     res.json(notice);
@@ -109,60 +109,56 @@ router.delete("/deletenotice/:id", fetchuser,checkUserRole('Admin'), async (req,
   }
 });
 
-//Second // Route 1:Create members using: POST "api/secretary/Addmembers". require Admin Login 
-router.post('/Addmembers', fetchuser,checkUserRole('Admin'),[
-  body('email').isEmail(),
-  body('name').isLength({ min: 3 }),
-  body('password').isLength({ min: 5 }),
-  body('phone').isLength({min:10}),
-  body('Address').isLength({min:10}),
-  body('roomNo').exists()
-], async (req, res) => {
-  // Check validations
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-  }
+  //Second // Route 1:Create members using: POST "api/secretary/Addmembers". require Admin Login 
+  router.post('/Addmembers', fetchuser,checkUserRole('Admin'),[
+    body('email').isEmail(),
+    body('name').isLength({ min: 3 }),
+    body('password').isLength({ min: 5 }),
+    body('phone').isLength({min:10}),
+    body('Address').isLength({min:10}),
+    body('roomNo').exists()
+  ], async (req, res) => {
+    // Check validations
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
 
-  try {
-      // Check if the email already exists
-      const existingUser = await User.findOne({ email: req.body.email });
-      if (existingUser) {
-          return res.status(400).json({ errors: [{ msg: 'Email already exists' }] });
-      }
+    try {
+        // Check if the email already exists
+        const existingUser = await User.findOne({ email: req.body.email });
+        if (existingUser) {
+            return res.status(400).json({ errors: [{ msg: 'Email already exists' }] });
+        }
 
-      // Hash Password
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(req.body.password, salt);
+        // Hash Password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
-      // Create a new user
-      const newUser = await User.create({
-          name: req.body.name,
-          email: req.body.email,
-          password: hashedPassword,
-          phone: req.body.phone, 
-          role: req.body.role,
-          role: "User",
-          Address:req.body.Address,
-          roomNo:req.body.roomNo
-      });
+        // Create a new user
+        const newUser = await User.create({
+            name: req.body.name,
+            email: req.body.email,
+            password: hashedPassword,
+            phone: req.body.phone, 
+            role: req.body.role,
+            role: "User",
+            Address:req.body.Address,
+            roomNo:req.body.roomNo
+        });
 
-      // Generate JWT token
-      const tokenData = {
-          id: newUser.id
-      };
-      const authtoken = jwt.sign(tokenData, JWT_SECRET);
+        const saveUser = await newUser.save();
 
-      // Return response with token
-      res.json({ authtoken });
-  } catch (error) {
-      console.error(error);
-      res.status(500).send('Server Error');
-  }
-});
+        // Return response with token
+        res.json(saveUser);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server Error');
+    }
+  });
 
-//Second // Route 2: Fetch members using: POST "api/secretary/fetchmembers". require Admin Login 
-router.get("/fetchmembers", fetchuser,checkUserRole('Admin'), async (req, res) => {
+//Second // Route 2: Fetch members using: POST "api/secretary/fetchmembers". require  Login admin or user 
+router.get("/fetchmembers", fetchuser, async (req, res) => {
   try {
     const user = await User.find().select("-password");
     res.json(user);

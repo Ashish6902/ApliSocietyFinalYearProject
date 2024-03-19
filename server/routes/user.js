@@ -7,6 +7,7 @@ const User = require("../models/User");
 const Funds = require("../models/Funds");
 
 
+
 //Route 1 : Read  Notice using : get "/api/user/fetchnotices --->  Login required
 router.get("/fetchnotices", fetchuser,checkUserRole('User'), async (req, res) => {
     try {
@@ -30,7 +31,7 @@ router.get("/fetchFunds", fetchuser,checkUserRole('User'), async (req, res) => {
     }
   });
 
-// Route 3: Fetch members details using: POST "api/secretary/fetchmembers". require Admin Login 
+// Route 3: Fetch members details using: POST "api/user/fetchmembers". require user Login 
 router.get("/fetchmembers", fetchuser,checkUserRole('User'), async (req, res) => {
     try {
       const user = await User.find().select("-password");
@@ -40,5 +41,74 @@ router.get("/fetchmembers", fetchuser,checkUserRole('User'), async (req, res) =>
       res.status(500).send("Server Error");
     }
   });
+
+// Route : update User POST :"api/user/Update" req user login
+router.put("/updateUser/:id", fetchuser,checkUserRole('User'), async (req, res) => {
+  const { title, description, date } = req.body;
+  try {
+    // Create an updateMember object
+    const updateMember = {};
+    const { email, name, password, phone, Address, roomNo } = req.body;
+    if (email) updateMember.email = email;
+    if (name) updateMember.name = name;
+    if (phone) updateMember.phone = phone;
+    if (Address) updateMember.Address = Address;
+    if (roomNo) updateMember.roomNo = roomNo;
+
+    // Find the user to be updated and update it
+    const member = await User.findById(req.params.id);
+
+    if (!member) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    if (member.id.toString() !== req.user.id) {
+      return res.status(401).json({ error: "Not allowed to update this user" });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(req.params.id, updateMember, {
+      new: true,
+    });
+
+    res.json({ user: updatedUser });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+// Route: Change password POST "/api/user/changepassword"
+router.post("/changepassword", fetchuser, checkUserRole('User'), async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  try {
+    // Find the user by ID
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Check if the current password provided matches the user's stored password
+    const isPasswordMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isPasswordMatch) {
+      return res.status(401).json({ error: "Current password is incorrect" });
+    }
+
+    // Hash the new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedNewPassword = await bcrypt.hash(newPassword, salt);
+
+    // Update the user's password
+    user.password = hashedNewPassword;
+    await user.save();
+
+    res.json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+
 
 module.exports= router;
