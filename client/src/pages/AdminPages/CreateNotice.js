@@ -27,7 +27,6 @@ const CreateNotice = () => {
       <div className="container">
         <h1>Notices</h1>
         <AddingNotice name="Add Notice" onChange={handleChange} onClick={handleClick} />
-        {console.log(Notice.length)}
         {!Array.isArray(Notice) || Notice.length === 0 ? 'No notes to display' : (
           Notice.map((notice) => (
             <NoteItem key={notice._id} Notice={notice} editNotice={editNotice} deleteNotice={deleteNotice}/>

@@ -46,6 +46,9 @@ const NavBar = () => {
                             {authToken && role === "Admin" && ( // Render additional links if user is logged in and has a specific role
                                 <>
                                     <li className="nav-item">
+                                        <Link className={`nav-link ${location.pathname === '/AdminDashboard' ? "active" : ""}`} to="/AdminDashboard">DashBoard</Link>
+                                    </li>
+                                    <li className="nav-item">
                                         <Link className={`nav-link ${location.pathname === '/CreateTransaction' ? "active" : ""}`} to="/CreateTransaction">Transactions</Link>
                                     </li>
                                     <li className="nav-item">
@@ -53,6 +56,9 @@ const NavBar = () => {
                                     </li>
                                     <li className="nav-item">
                                         <Link className={`nav-link ${location.pathname === '/CreateNotice' ? "active" : ""}`} to="/CreateNotice">Notices</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link className={`nav-link ${location.pathname === '/Calender' ? "active" : ""}`} to="/Calender">Calender</Link>
                                     </li>
                                     
                                 </>

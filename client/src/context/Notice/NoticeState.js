@@ -29,6 +29,32 @@ const NoticeState = (props) => {
     }
   }, [authToken, getAllNotices]);
 
+  //for calender
+  const fetchAllNotices = async () => {
+    const host = 'http://localhost:5000';
+    const authToken = localStorage.getItem('authToken');
+
+    try {
+        const response = await fetch(`${host}/api/secretary/fetchnotices`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token': authToken,
+            },
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch notices');
+        }
+
+        const json = await response.json();
+        return json;
+    } catch (error) {
+        console.error('Error fetching notices:', error);
+        throw error;
+    }
+};
+
   // Add Note 
   const addNotice = async (title, description, date) => {
     // Api call
@@ -72,7 +98,7 @@ const deleteNotice = async (id) => {
 }
 
   return (
-    <NoticeContext.Provider value={{ Notice,setNotice, getAllNotices, addNotice ,editNotice,deleteNotice}}>
+    <NoticeContext.Provider value={{ Notice,setNotice, getAllNotices, addNotice ,editNotice,deleteNotice,fetchAllNotices}}>
       {props.children}
     </NoticeContext.Provider>
   );

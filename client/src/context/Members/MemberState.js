@@ -21,7 +21,6 @@ const MemberState = (props) => {
       setMembers(json);
     } catch (error) {
       console.error('Error fetching Members:', error);
-      console.log(1);
     }
   }, [authToken, host]);
 

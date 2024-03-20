@@ -258,7 +258,7 @@ router.delete("/deleteFunds/:id", fetchuser,checkUserRole('Admin'), async (req, 
 });
 
 //to fetchTotal amount 
-router.get("/TotalFunds", fetchuser,checkUserRole('Admin'), async (req, res) => {
+router.get("/TotalFunds", fetchuser, async (req, res) => {
   try {
     let Totalfunds =0;
     const funds = await Funds.find();

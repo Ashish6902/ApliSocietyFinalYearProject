@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
 import NavBar from './Components/NavBar';
 import About from './pages/Defalut/About';
 import Contact from './pages/Defalut/Contact';
@@ -15,12 +16,17 @@ import CreateMembers from './pages/AdminPages/CreateMembers';
 import CreateNotice from './pages/AdminPages/CreateNotice';
 import NoticeState from './context/Notice/NoticeState';
 import MemberState from './context/Members/MemberState';
+import TransactionState from './context/Transactions/TransactionState'
+import AdminDashboard from './pages/AdminPages/AdminDashboard';
+import AdminEvents from './pages/AdminPages/AdminEvents';
+
 
 function App() {
   return (
     <SetRoles>
       <NoticeState>
       <MemberState>
+      <TransactionState>
       <Router>
         <NavBar />
         <Routes>
@@ -29,15 +35,18 @@ function App() {
           <Route exact path="/contact" element={<Contact />} />
           <Route exact path="/login" element={<Login />} />
           <Route element={<PrivateRoutes/>}>
-              <Route path='/GetTransactions' element={<Transactions/>} />
-              <Route path='/GetMembers' element={<Members/>} />
-              <Route path='/GetNotices' element={<Notices/>} />
-              <Route path='/CreateTransaction' element={<CreateTransaction/>} />
-              <Route path='/CreateMembers' element={<CreateMembers/>} />
-              <Route path='/CreateNotice' element={<CreateNotice/>} />
+              <Route exact path='/AdminDashboard' element={<AdminDashboard/>} />
+              <Route exact path='/GetTransactions' element={<Transactions/>} />
+              <Route exact path='/GetMembers' element={<Members/>} />
+              <Route exact path='/GetNotices' element={<Notices/>} />
+              <Route exact path='/Calender' element={<AdminEvents/>} /> {/*rendering AdminEvent ar calender route */}
+              <Route exact path='/CreateTransaction' element={<CreateTransaction/>} />
+              <Route exact path='/CreateMembers' element={<CreateMembers/>} />
+              <Route exact path='/CreateNotice' element={<CreateNotice/>} />
           </Route>
         </Routes>
       </Router>
+      </TransactionState>
       </MemberState>
       </NoticeState>
     </SetRoles>
