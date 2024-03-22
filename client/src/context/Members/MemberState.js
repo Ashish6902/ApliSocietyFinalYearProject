@@ -42,7 +42,6 @@ const addMembers = async (name, email, password, phone, Address, roomNo) => {
       body: JSON.stringify({ name, email, password, phone, Address, roomNo})
   });
   const member = await response.json();
-  console.log(member);
   setMembers([...Members,member]);
 }
 

@@ -218,7 +218,7 @@ router.post('/AddFunds', fetchuser, checkUserRole('Admin'), [
     }
 
     // Return response with the created fund
-    res.json({ fund });
+    res.json(fund );
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Server Error' });
@@ -226,7 +226,7 @@ router.post('/AddFunds', fetchuser, checkUserRole('Admin'), [
 });
 
 //Third //Route 2 fetch Funds using: POST "api/secretary/fetchFunds". require Admin Login 
-router.get("/fetchFunds", fetchuser,checkUserRole('Admin'), async (req, res) => {
+router.get("/fetchFunds", fetchuser, async (req, res) => {
   try {
     const funds = await Funds.find();
     res.json(funds);

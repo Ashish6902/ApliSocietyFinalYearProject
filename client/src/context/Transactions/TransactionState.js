@@ -4,7 +4,7 @@ import TransactionsContext from './TransactionsContext';
 const MemberState = (props) => {
   const host = 'http://localhost:5000';
   const [Transaction, setTransaction] = useState([]);
-  const [totalFunds, setTotalFunds] = useState(0); // State to hold the total funds
+  const [totalFunds, setTotalFunds] = useState(0); 
   const authToken = localStorage.getItem('authToken');
 
   // Fetch transactions
@@ -48,8 +48,46 @@ const MemberState = (props) => {
     }
   }, [authToken, getAllTransactions, getTotalFunds]);
 
+  // Delete transaction
+  const deleteTransaction = async (id) => {
+    try {
+      // Api call
+      await fetch(`${host}/api/secretary/deleteFunds/${id}`, {
+          method: 'DELETE',
+          headers: {
+              'Content-Type': 'application/json',
+              'auth-token': authToken
+          },
+      });
+      
+      // Update state after deletion
+      setTransaction(transactions => transactions.filter(transaction => transaction._id !== id));
+    } catch (error) {
+      console.error('Error deleting transaction:', error);
+    }
+  }
+  // Add Transactions
+const addTransaction = async (information, date, amount) => {
+  try {
+    // Api call
+    const response = await fetch(`${host}/api/secretary/AddFunds`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'auth-token': authToken
+        },
+        body: JSON.stringify({ information, date, amount})
+    });
+    const transaction = await response.json();
+    setTransaction([...Transaction, transaction]);
+  } catch (error) {
+    console.error('Error adding transaction:', error);
+  }
+}
+
+
   return (
-    <TransactionsContext.Provider value={{ Transaction, setTransaction, getAllTransactions, totalFunds }}>
+    <TransactionsContext.Provider value={{ Transaction, setTransaction, getAllTransactions, totalFunds,getTotalFunds,addTransaction, deleteTransaction }}>
       {props.children}
     </TransactionsContext.Provider>
   );

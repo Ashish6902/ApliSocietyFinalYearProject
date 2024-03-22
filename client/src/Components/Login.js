@@ -45,7 +45,7 @@ const Login = () => {
           navigate("/GetTransactions");
           break;
         case "Admin":
-          navigate("/CreateTransaction");
+          navigate("/AdminDashboard");
           break;
         
         default:

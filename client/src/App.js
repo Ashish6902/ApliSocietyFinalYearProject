@@ -19,6 +19,7 @@ import MemberState from './context/Members/MemberState';
 import TransactionState from './context/Transactions/TransactionState'
 import AdminDashboard from './pages/AdminPages/AdminDashboard';
 import AdminEvents from './pages/AdminPages/AdminEvents';
+import AdminBalanceSheet from './pages/AdminPages/AdminBalanceSheet';
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
               <Route exact path='/GetMembers' element={<Members/>} />
               <Route exact path='/GetNotices' element={<Notices/>} />
               <Route exact path='/Calender' element={<AdminEvents/>} /> {/*rendering AdminEvent ar calender route */}
+              <Route exact path='/BalanceSheet' element={<AdminBalanceSheet/>} /> 
               <Route exact path='/CreateTransaction' element={<CreateTransaction/>} />
               <Route exact path='/CreateMembers' element={<CreateMembers/>} />
               <Route exact path='/CreateNotice' element={<CreateNotice/>} />

@@ -3,12 +3,21 @@ import TransactionsContext from '../../context/Transactions/TransactionsContext'
 import FetchTransactions from '../../Components/FetchTransactions';
 
 const CreateTransaction = () => {
-  const { Transaction, getAllTransactions, totalFunds } = useContext(TransactionsContext);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+
+  const formatDate = (date) => {
+    // Format date as YYYY-MM-DD (required for input type="date")
+    return date.toISOString().split('T')[0];
+  };
+
+  const today = new Date();
+  const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const { Transaction, getAllTransactions, getTotalFunds, totalFunds } = useContext(TransactionsContext);
+  const [startDate, setStartDate] = useState(formatDate(firstDayOfMonth));
+  const [endDate, setEndDate] = useState(formatDate(today));
 
   useEffect(() => {
     getAllTransactions();
+    getTotalFunds();
     // eslint-disable-next-line 
   }, []);
 
@@ -28,7 +37,7 @@ const CreateTransaction = () => {
       return transactionDate >= start && transactionDate <= end;
     });
     const sortedTransactions = filteredTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
-    return sortedTransactions.slice(0, 10); // Return the first 10 transactions
+    return sortedTransactions;
   };
 
   const sortedFilteredTransactions = filterAndSortTransactions();
