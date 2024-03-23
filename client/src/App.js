@@ -20,6 +20,7 @@ import TransactionState from './context/Transactions/TransactionState'
 import AdminDashboard from './pages/AdminPages/AdminDashboard';
 import AdminEvents from './pages/AdminPages/AdminEvents';
 import AdminBalanceSheet from './pages/AdminPages/AdminBalanceSheet';
+import UserCalender from './pages/Users/UserCalender';
 
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
               <Route exact path='/CreateTransaction' element={<CreateTransaction/>} />
               <Route exact path='/CreateMembers' element={<CreateMembers/>} />
               <Route exact path='/CreateNotice' element={<CreateNotice/>} />
+              <Route exact path='/UserCalender' element={<UserCalender/>} />
           </Route>
         </Routes>
       </Router>

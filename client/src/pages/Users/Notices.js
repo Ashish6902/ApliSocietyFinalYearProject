@@ -1,68 +1,28 @@
-import React, { useContext, useEffect, useState } from 'react';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
+import React, {  useContext, useEffect } from 'react';
 import NoticeContext from '../../context/Notice/NoticeContext';
-import { Modal } from 'react-bootstrap';
+import NoteItem from '../../Components/NoticeItem';
 
 const Notices = () => {
-    const { fetchAllNotices } = useContext(NoticeContext);
-    const [events, setEvents] = useState([]);
-    const [showModal, setShowModal] = useState(false);
-    const [selectedNote, setSelectedNote] = useState(null);
+  const { Notice, getAllNotices,editNotice ,deleteNotice} = useContext(NoticeContext);
 
-    useEffect(() => {
-        const fetchEvents = async () => {
-            try {
-                const notices = await fetchAllNotices();
-                const eventsData = notices.map(notice => ({
-                    title: notice.title,
-                    date: notice.date,
-                    description: notice.description
-                }));
-                setEvents(eventsData);
-            } catch (error) {
-                console.error('Error fetching notices:', error);
-            }
-        };
+  useEffect(() => {
+    getAllNotices();
+    // eslint-disable-next-line 
+  }, []);
 
-        fetchEvents();
-    }, [fetchAllNotices]);
 
-    const handleClose = () => setShowModal(false);
-
-    const rederModal = (eventInfo) => {
-        setSelectedNote(eventInfo.event);
-        setShowModal(true);
-    };
-
-    return (
-        <div className='container adminpage'>
-            <FullCalendar
-                plugins={[dayGridPlugin]}
-                initialView="dayGridMonth"
-                events={events}
-                eventContent={renderEventContent}
-                eventClick={rederModal}
-            />
-            <Modal show={showModal} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{selectedNote ? selectedNote.title : ''}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>{selectedNote ? selectedNote.extendedProps.description : ''}</Modal.Body>
-                <Modal.Footer>
-                    <button type="button" class="btn btn-secondary" onClick={handleClose}>Close</button>
-                </Modal.Footer>
-            </Modal>
-        </div>
-    );
-};
-
-const renderEventContent = (eventInfo) => {
-    return (
-        <div style={{ backgroundColor: 'blue', color: 'white', padding: '5px', borderRadius: '5px' }}>
-            {eventInfo.event.title}
-        </div>
-    );
+  return (
+    <>
+      <div className="container">
+        <h1>Notices</h1>
+        {!Array.isArray(Notice) || Notice.length === 0 ? 'No notes to display' : (
+          Notice.map((notice) => (
+            <NoteItem key={notice._id} Notice={notice} editNotice={editNotice} deleteNotice={deleteNotice}/>
+          ))
+        )}
+      </div>
+    </>
+  );
 };
 
 export default Notices;
