@@ -86,8 +86,9 @@ router.post('/login', [
         const data = {
             id: user.id
         };
+        const userID = user.id;
         const authtoken = jwt.sign(data, JWT_SECRET);
-        res.json({ authtoken });
+        res.json({ authtoken, userID  });
      }catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -98,7 +99,7 @@ router.post('/login', [
 router.post('/getuserRole', fetchuser,  async (req, res) => {
     try {
       const userId = req.user.id;
-      const user = await User.findById(userId).select("role")
+      const user = await User.findById(userId).select("role _id")
       res.send(user)
     } catch (error) {
       console.error(error.message);

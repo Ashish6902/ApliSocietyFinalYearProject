@@ -10,7 +10,7 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const { setRole } = useContext(userRoleContext);
+  const { setRole ,setId} = useContext(userRoleContext);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -37,12 +37,13 @@ const Login = () => {
 
       const data = await response.json();
       const authToken = data.authtoken;
+      const Userid = data.userID;
 
       let userRole = await checkRole(authToken);
       console.log(userRole);
       switch (userRole) {
         case "User":
-          navigate("/GetTransactions");
+          navigate("/GetNotices");
           break;
         case "Admin":
           navigate("/AdminDashboard");
@@ -54,6 +55,7 @@ const Login = () => {
       // Store token in local storage
       localStorage.setItem('authToken', authToken);
       localStorage.setItem('role',userRole );
+      localStorage.setItem('userId',Userid);
       // Optionally, redirect or update state to reflect successful login
     } catch (error) {
       console.error('Error:', error.message);
@@ -73,7 +75,9 @@ const Login = () => {
       });
       const data = await response.json(); // Parse response to JSON
       const role = data.role; // Assuming the response contains a 'role' property
+      const Userid = data._id
       setRole(role); // Set the role using the provided setRole function
+      setId(Userid)
       return role;
     } catch (error) {
       console.error('Error checking role:', error.message);

@@ -31,27 +31,29 @@ router.get("/fetchFunds", fetchuser,checkUserRole('User'), async (req, res) => {
     }
   });
 
-// Route 3: Fetch members details using: POST "api/user/fetchmembers". require user Login 
-router.get("/fetchmembers", fetchuser,checkUserRole('User'), async (req, res) => {
+  router.post("/fetchmember", fetchuser, checkUserRole('User'), async (req, res) => {
     try {
-      const user = await User.find().select("-password");
+      const { _id } = req.body; 
+      const user = await User.findById(_id).select("-password -role");
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
       res.json(user);
     } catch (error) {
       console.error(error);
       res.status(500).send("Server Error");
     }
   });
+  
 
 // Route : update User POST :"api/user/Update" req user login
 router.put("/updateUser/:id", fetchuser,checkUserRole('User'), async (req, res) => {
-  const { title, description, date } = req.body;
   try {
     // Create an updateMember object
     const updateMember = {};
-    const { email, name, password, phone, Address, roomNo } = req.body;
-    if (email) updateMember.email = email;
+    const { name, phone, Address, roomNo } = req.body;
     if (name) updateMember.name = name;
-    if (phone) updateMember.phone = phone;
     if (Address) updateMember.Address = Address;
     if (roomNo) updateMember.roomNo = roomNo;
 
@@ -70,7 +72,7 @@ router.put("/updateUser/:id", fetchuser,checkUserRole('User'), async (req, res) 
       new: true,
     });
 
-    res.json({ user: updatedUser });
+    res.json(updatedUser);
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ error: "Server Error" });

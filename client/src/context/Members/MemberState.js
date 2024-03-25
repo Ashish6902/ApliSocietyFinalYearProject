@@ -5,7 +5,28 @@ const MemberState = (props) => {
   const host = 'http://localhost:5000';
   const [Members, setMembers] = useState([]);
   const authToken = localStorage.getItem('authToken');
+  const [Member,setMember] =useState("")
 
+
+  // Fetch member
+const getMember = useCallback(async (_id) => {
+  try {
+    const response = await fetch(`${host}/api/user/fetchmember`, { 
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'auth-token': authToken,
+      },
+      body: JSON.stringify({ _id })
+    });
+    const json = await response.json();
+    setMember(json);
+  } catch (error) {
+    console.error('Error fetching Member:', error);
+  }
+}, [authToken, host]);
+
+  
 
   //fetch members
   const getAllMembers = useCallback(async () => {
@@ -44,6 +65,20 @@ const addMembers = async (name, email, password, phone, Address, roomNo) => {
   const member = await response.json();
   setMembers([...Members,member]);
 }
+//update members
+const updateMembers = async (id,name , Address,roomNo) => {
+  // Api call
+  const response = await fetch(`${host}/api/user/updateUser/${id}`, {
+      method: 'PUT',
+      headers: {
+          'Content-Type': 'application/json',
+          'auth-token': authToken
+      },
+      body: JSON.stringify({ name, Address,roomNo })
+  });
+  const json = await response.json();
+    setMember(json);
+}
 
 // Delete members
 const deleteMembers = async (id) => {
@@ -60,7 +95,7 @@ const deleteMembers = async (id) => {
 
 
   return (
-    <MemberContext.Provider value={{Members, setMembers,getAllMembers,deleteMembers,addMembers }}>
+    <MemberContext.Provider value={{Members, setMembers,getAllMembers,deleteMembers,addMembers,updateMembers,getMember,Member}}>
       {props.children}
     </MemberContext.Provider>
   );
