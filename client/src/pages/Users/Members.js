@@ -4,8 +4,9 @@ import MemberContext from "../../context/Members/MemberContext";
 
 const Members = () => {
   const { userId } = useContext(userRoleContext);
-  const { getMember, Member, updateMembers } = useContext(MemberContext);
+  const { getMember, Member, updateMembers,updatePassword } = useContext(MemberContext);
   const refcolse = useRef(null)
+
 
   const [formData, setFormData] = useState({
     name: "",
@@ -13,6 +14,11 @@ const Members = () => {
     roomNo: "",
   });
 
+  const [changepassword ,setchangepassword] = useState({
+    currentPassword: "",
+    newpassword:"",
+    confirmPassword: ""
+  })
   useEffect(() => {
     // Fetch member data when the component mounts
     if (userId) {
@@ -35,12 +41,25 @@ const Members = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleChangePass = (e)=>{
+    setchangepassword({ ...changepassword, [e.target.name]: e.target.value });
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     // Call updateMembers with updated data
     updateMembers(userId, formData.name, formData.Address, formData.roomNo);
     refcolse.current.click();
   };
+
+  const handleSubmitPass = (e) =>{
+    e.preventDefault();
+    if(e.newpassword === e.confirmPassword){
+        console.log("password changed")
+        console.log(e.newpassword)
+        updatePassword(userId,changepassword.currentPassword,changepassword.newpassword);
+    }
+    refcolse.current.click();
+  }
 
   return (
     <div className="container">
@@ -91,6 +110,41 @@ const Members = () => {
           </div>
         </div>
       </div>
+
+
+      <div className="modal fade" id="ResePasstModal" tabIndex="-1" aria-labelledby="ResePasstModalLabel" aria-hidden="true">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="ResePasstModalLabel">Reset Password</h1>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div className="modal-body">
+              <div className="form-group">
+                <label htmlFor="currentPassword">Current Password</label>
+                <input type="password" className="form-control" id="currentPassword" name="currentPassword" value={changepassword.currentPassword} onChange={handleChangePass} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="newpassword">New Password:</label>
+                <input type="password" className="form-control" id="newpassword" name="newpassword" value={changepassword.newpassword} onChange={handleChangePass} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="confirmPassword">Confirm password:</label>
+                <input type="password" className="form-control" id="confirmPassword" name="confirmPassword" value={changepassword.confirmPassword} onChange={handleChangePass} />
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button ref={refcolse} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" className="btn btn-primary" onClick={handleSubmitPass}>Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
      </div> 
   );
 };

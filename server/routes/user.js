@@ -5,6 +5,7 @@ var checkUserRole = require("../middleware/checkUserRole")
 const Notice = require("../models/Notice");
 const User = require("../models/User");
 const Funds = require("../models/Funds");
+const bcrypt = require('bcryptjs');
 
 
 
@@ -52,7 +53,7 @@ router.put("/updateUser/:id", fetchuser,checkUserRole('User'), async (req, res) 
   try {
     // Create an updateMember object
     const updateMember = {};
-    const { name, phone, Address, roomNo } = req.body;
+    const { name, Address, roomNo } = req.body;
     if (name) updateMember.name = name;
     if (Address) updateMember.Address = Address;
     if (roomNo) updateMember.roomNo = roomNo;
@@ -80,8 +81,8 @@ router.put("/updateUser/:id", fetchuser,checkUserRole('User'), async (req, res) 
 });
 
 // Route: Change password POST "/api/user/changepassword"
-router.post("/changepassword", fetchuser, checkUserRole('User'), async (req, res) => {
-  const { currentPassword, newPassword } = req.body;
+router.put("/changepassword/:id", fetchuser, checkUserRole('User'), async (req, res) => {
+  const { currentPass, newPass } = req.body; // Updated to match the body fields in your API call
   try {
     // Find the user by ID
     const user = await User.findById(req.user.id);
@@ -91,14 +92,14 @@ router.post("/changepassword", fetchuser, checkUserRole('User'), async (req, res
     }
 
     // Check if the current password provided matches the user's stored password
-    const isPasswordMatch = await bcrypt.compare(currentPassword, user.password);
+    const isPasswordMatch = await bcrypt.compare(currentPass, user.password); // Updated variable name
     if (!isPasswordMatch) {
       return res.status(401).json({ error: "Current password is incorrect" });
     }
 
     // Hash the new password
     const salt = await bcrypt.genSalt(10);
-    const hashedNewPassword = await bcrypt.hash(newPassword, salt);
+    const hashedNewPassword = await bcrypt.hash(newPass, salt); // Updated variable name
 
     // Update the user's password
     user.password = hashedNewPassword;

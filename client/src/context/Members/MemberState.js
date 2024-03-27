@@ -93,9 +93,22 @@ const deleteMembers = async (id) => {
   setMembers(Members.filter(member => member._id !== id));
 }
 
+//update Password
+const updatePassword = async (id,currentPass , newPass) => {
+  // Api call
+  await fetch(`${host}/api/user/changepassword/${id}`, {
+      method: 'PUT',
+      headers: {
+          'Content-Type': 'application/json',
+          'auth-token': authToken
+      },
+      body: JSON.stringify({currentPass , newPass})
+  });
+  console.log(newPass)
+}
 
   return (
-    <MemberContext.Provider value={{Members, setMembers,getAllMembers,deleteMembers,addMembers,updateMembers,getMember,Member}}>
+    <MemberContext.Provider value={{Members, setMembers,getAllMembers,deleteMembers,addMembers,updateMembers,getMember,Member,updatePassword}}>
       {props.children}
     </MemberContext.Provider>
   );
