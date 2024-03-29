@@ -43,7 +43,7 @@ const Login = () => {
       console.log(userRole);
       switch (userRole) {
         case "User":
-          navigate("/GetNotices");
+          navigate("/GetTransactions");
           break;
         case "Admin":
           navigate("/AdminDashboard");

@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import TransactionsContext from '../context/Transactions/TransactionsContext';
 import FetchTransactions from '../Components/FetchTransactions';
-import userRoleContext from '../context/Roles/userRoleContext';
 import { Link } from 'react-router-dom';
 
 const TransactionData = () => {
@@ -9,7 +8,6 @@ const TransactionData = () => {
     return date.toISOString().split('T')[0];
   };
 
-  const { role } = useContext(userRoleContext);
   const { Transaction, getAllTransactions, getTotalFunds, totalFunds } = useContext(TransactionsContext);
 
   const today = new Date();
@@ -48,7 +46,7 @@ const TransactionData = () => {
   return (
     <div className='container'>
       <h3>Total Amount: {totalFunds}</h3>
-      {role === "User" && <Link className='btn btn-primary' to='/BalanceSheet'>Balance Sheet</Link>}
+      <Link className='btn btn-primary' to='/BalanceSheet'>Balance Sheet</Link>
       <div>
         <label htmlFor="startDate">Start Date: </label>
         <input type="date" id="startDate" value={startDate} onChange={handleStartDateChange} />

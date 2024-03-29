@@ -62,16 +62,17 @@ const AdminBalanceSheet = () => {
 
   return (
     <div className='container'>
-     <h3>Total Amount: {totalFunds}</h3> {/* Display the total amount */}
-     <div>
-       <label htmlFor="startDate">Start Date: </label>
-       <input type="date" id="startDate" value={startDate} onChange={handleStartDateChange} />
+     <h3 className='my-3'>Total Amount: {totalFunds}</h3> {/* Display the total amount */}
+     <div className='my-4 d-inline '>
+       <label htmlFor="startDate ">Start Date:</label>
+       <input className="mx-2" type="date" id="startDate" value={startDate} onChange={handleStartDateChange} />
+       <p className='d-inline mx-2 my-2'>to</p>
      </div>
-     <div>
+     <div className='my-4 d-inline'>
        <label htmlFor="endDate">End Date: </label>
-       <input type="date" id="endDate" value={endDate} onChange={handleEndDateChange} />
+       <input className="mx-2 my-2"  type="date" id="endDate" value={endDate} onChange={handleEndDateChange} />
      </div>
-     <table className="table table-bordered">
+     <table className="table table-bordered my-5" >
         <thead>
           <tr>
             <th scope="col">Date</th>

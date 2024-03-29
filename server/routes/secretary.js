@@ -33,7 +33,6 @@ router.post("/addnotice",fetchuser, checkUserRole('Admin'),
         const notice = new Notice({
           title,
           description,
-          user: req.user.id,
           date
         });
   

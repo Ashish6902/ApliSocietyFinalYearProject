@@ -21,27 +21,27 @@ const NavBar = () => {
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg bg-body-tertiary">
+            <nav className="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
                 <div className="container-fluid d-flex">
                     <Link className="navbar-brand" to="/">Apli Society</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav">
+                        <ul className="navbar-nav ">
                             {authToken && role === "User" && ( // Render additional links if user is logged in and has a specific role
                                 <>
                                     <li className="nav-item">
-                                        <Link className={`nav-link ${location.pathname === '/GetNotices' ? "active" : ""}`} to="/GetNotices">Notices</Link>
+                                        <Link className={`nav-link ${location.pathname === '/GetTransactions' ? "active" : ""}`} to="/GetTransactions">Transactions</Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link className={`nav-link ${location.pathname === '/GetTransactions' ? "active" : ""}`} to="/GetTransactions">Transactions</Link>
+                                        <Link className={`nav-link ${location.pathname === '/GetNotices' ? "active" : ""}`} to="/GetNotices">Notices</Link>
                                     </li>
                                     <li className="nav-item">
                                         <Link className={`nav-link ${location.pathname === '/UserCalender' ? "active" : ""}`} to="/UserCalender">Calender</Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link className={`nav-link ${location.pathname === '/GetMembers' ? "active" : ""}`} to="/GetMembers">Members</Link>
+                                        <Link className={`nav-link ${location.pathname === '/GetMembers' ? "active" : ""}`} to="/GetMembers">User</Link>
                                     </li>
                                     
                                 </>
@@ -55,7 +55,7 @@ const NavBar = () => {
                                         <Link className={`nav-link ${location.pathname === '/CreateTransaction' ? "active" : ""}`} to="/CreateTransaction">Transactions</Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link className={`nav-link ${location.pathname === '/CreateMembers' ? "active" : ""}`} to="/CreateMembers">Membes</Link>
+                                        <Link className={`nav-link ${location.pathname === '/CreateMembers' ? "active" : ""}`} to="/CreateMembers">Members</Link>
                                     </li>
                                     <li className="nav-item">
                                         <Link className={`nav-link ${location.pathname === '/CreateNotice' ? "active" : ""}`} to="/CreateNotice">Notices</Link>
@@ -77,15 +77,20 @@ const NavBar = () => {
                                     <li className="nav-item">
                                         <Link className={`nav-link ${location.pathname === '/contact' ? "active" : ""}`} to="/contact">Contact</Link>
                                     </li>
-                                    <li className="nav-item">
-                                        <Link className={`btn btn-outline-secondary mx-2`} to="/login">Login</Link>
-                                    </li>
+                                    
                                 </>
                             )}
                         </ul>
-                        {authToken && ( // Render logout button if user is logged in
-                            <button className="btn btn-outline-secondary mx-2" onClick={handleLogout}>Logout</button>
-                        )}
+                        <div className="collapse navbar-collapse d-flex justify-content-end" id="navbarNav" >
+                        <ul className="navbar-nav ">
+                            {!authToken && <li className="nav-item">
+                                            <Link className={`btn btn-outline-success mx-2`} to="/login">Login</Link>
+                            </li>}
+                            {authToken && ( // Render logout button if user is logged in
+                                <button className="btn btn-outline-warning mx-2" onClick={handleLogout}>Logout</button>
+                            )}
+                        </ul>                                   
+                    </div>
                     </div>
                 </div>
             </nav>
