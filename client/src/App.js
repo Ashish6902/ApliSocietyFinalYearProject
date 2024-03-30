@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext }from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import NavBar from './Components/NavBar';
@@ -6,7 +6,6 @@ import About from './pages/Defalut/About';
 import Contact from './pages/Defalut/Contact';
 import Login from './Components/Login';
 import Home from './pages/Defalut/Home';
-import SetRoles from './context/Roles/userRoleContextprovider';
 import Transactions from './pages/Users/Transactions';
 import PrivateRoutes from './privateRoute';
 import Notices from './pages/Users/Notices';
@@ -21,11 +20,15 @@ import AdminDashboard from './pages/AdminPages/AdminDashboard';
 import AdminEvents from './pages/AdminPages/AdminEvents';
 import AdminBalanceSheet from './pages/AdminPages/AdminBalanceSheet';
 import UserCalender from './pages/Users/UserCalender';
+import userRoleContext from './context/Roles/userRoleContext';
 
 
 function App() {
+
+  const {role} = useContext(userRoleContext);;
+  
   return (
-    <SetRoles>
+    
       <NoticeState>
       <MemberState>
       <TransactionState>
@@ -37,23 +40,24 @@ function App() {
           <Route exact path="/contact" element={<Contact />} />
           <Route exact path="/login" element={<Login />} />
           <Route element={<PrivateRoutes/>}>
-              <Route exact path='/AdminDashboard' element={<AdminDashboard/>} />
-              <Route exact path='/GetTransactions' element={<Transactions/>} />
-              <Route exact path='/GetMembers' element={<Members/>} />
-              <Route exact path='/GetNotices' element={<Notices/>} />
-              <Route exact path='/Calender' element={<AdminEvents/>} /> {/*rendering AdminEvent ar calender route */}
-              <Route exact path='/BalanceSheet' element={<AdminBalanceSheet/>} /> 
-              <Route exact path='/CreateTransaction' element={<CreateTransaction/>} />
-              <Route exact path='/CreateMembers' element={<CreateMembers/>} />
-              <Route exact path='/CreateNotice' element={<CreateNotice/>} />
-              <Route exact path='/UserCalender' element={<UserCalender/>} />
+              {role === "Admin" && <Route exact path='/AdminDashboard' element={<AdminDashboard/>} />}
+              {role === "Admin" &&<Route exact path='/CreateTransaction' element={<CreateTransaction/>} />}
+              {role === "Admin" &&<Route exact path='/CreateMembers' element={<CreateMembers/>} />}
+              {role === "Admin" &&<Route exact path='/CreateNotice' element={<CreateNotice/>} />}
+              {role === "Admin" &&<Route exact path='/GetNotices' element={<Notices/>} />}
+              {role === "Admin" &&<Route exact path='/Calender' element={<AdminEvents/>} /> }{/*rendering AdminEvent ar calender route */}
+
+              {role === "User" &&<Route exact path='/BalanceSheet' element={<AdminBalanceSheet/>} />}
+              {role === "User" &&<Route exact path='/GetTransactions' element={<Transactions/>} />}
+              {role === "User" &&<Route exact path='/GetMembers' element={<Members/>} />}
+              {role === "User" &&<Route exact path='/UserCalender' element={<UserCalender/>} />}
+
           </Route>
         </Routes>
       </Router>
       </TransactionState>
       </MemberState>
       </NoticeState>
-    </SetRoles>
   );
 }
 

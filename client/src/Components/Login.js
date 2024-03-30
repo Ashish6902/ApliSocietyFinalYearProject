@@ -41,6 +41,7 @@ const Login = () => {
 
       let userRole = await checkRole(authToken);
       console.log(userRole);
+      setRole(userRole)
       switch (userRole) {
         case "User":
           navigate("/GetTransactions");
