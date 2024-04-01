@@ -1,5 +1,5 @@
-import React, { useRef, useState,useContext } from 'react';
-import  userRoleContext  from "../context/Roles/userRoleContext"; 
+import React, { useRef, useState, useContext } from 'react';
+import userRoleContext from "../context/Roles/userRoleContext";
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -19,9 +19,7 @@ const NoteItem = ({ Notice, editNotice, deleteNotice }) => {
   const refCloseUpdate = useRef(null);
   const refCloseDelete = useRef(null);
 
-  
-  const { role,} = useContext(userRoleContext); 
-
+  const { role } = useContext(userRoleContext);
 
   const onChange = (event) => {
     setNote({ ...note, [event.target.name]: event.target.value });
@@ -44,13 +42,18 @@ const NoteItem = ({ Notice, editNotice, deleteNotice }) => {
           <li className="list-group-item">{formatDate(Notice.date)} -- ({Notice.title})</li>
           <li className="list-group-item">{Notice.description}</li>
           {role === "Admin" && (
-          <li className="list-group-item">
-            <div>
-              {/* button to open update modal */}
-              
-              <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target={`#updateModal${Notice._id}`}>
-                Update
-              </button>
+            <li className="list-group-item d-flex justify-content-between">
+              <div>
+                {/* button to open update modal */}
+                <button type="button" className="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target={`#updateModal${Notice._id}`}>
+                  Update
+                </button>
+
+                {/* button to open delete modal */}
+                <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target={`#deleteModal${Notice._id}`}>
+                  Delete
+                </button>
+              </div>
 
               {/* modal for update */}
               <div className="modal fade" id={`updateModal${Notice._id}`} tabIndex="-1" aria-labelledby={`updateModalLabel${Notice._id}`} aria-hidden="true">
@@ -83,13 +86,6 @@ const NoteItem = ({ Notice, editNotice, deleteNotice }) => {
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div>
-              {/* button to open delete modal */}
-              <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target={`#deleteModal${Notice._id}`}>
-                Delete
-              </button>
 
               {/* modal for delete */}
               <div className="modal fade" id={`deleteModal${Notice._id}`} tabIndex="-1" aria-labelledby={`deleteModalLabel${Notice._id}`} aria-hidden="true">
@@ -106,10 +102,7 @@ const NoteItem = ({ Notice, editNotice, deleteNotice }) => {
                   </div>
                 </div>
               </div>
-            </div>
-
-            
-          </li>
+            </li>
           )}
         </ul>
       </div>

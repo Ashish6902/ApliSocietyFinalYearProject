@@ -49,7 +49,10 @@ const Login = () => {
         case "Admin":
           navigate("/AdminDashboard");
           break;
-        
+        case "SuperAdmin":
+          navigate("/Society");
+          break;
+          
         default:
           break;
       }

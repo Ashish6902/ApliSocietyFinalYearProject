@@ -4,7 +4,7 @@ import NoteItem from '../../Components/NoticeItem';
 import AddingNotice from '../../Components/AddingNotice';
 
 const CreateNotice = () => {
-  const { Notice, getAllNotices, addNotice,editNotice ,deleteNotice} = useContext(NoticeContext);
+  const { Notice, getAllNotices, addNotice, editNotice, deleteNotice } = useContext(NoticeContext);
 
   useEffect(() => {
     getAllNotices();
@@ -22,14 +22,17 @@ const CreateNotice = () => {
     setNotice({ title: "", description: "", date: "" });
   };
 
+  // Create a copy of Notice array and then reverse it
+  const reversedNotices = [...Notice].reverse();
+
   return (
     <>
       <div className="container">
         <h1>Notices</h1>
         <AddingNotice name="Add Notice" onChange={handleChange} onClick={handleClick} />
-        {!Array.isArray(Notice) || Notice.length === 0 ? 'No notes to display' : (
-          Notice.map((notice) => (
-            <NoteItem key={notice._id} Notice={notice} editNotice={editNotice} deleteNotice={deleteNotice}/>
+        {!Array.isArray(reversedNotices) || reversedNotices.length === 0 ? 'No notes to display' : (
+          reversedNotices.map((notice) => (
+            <NoteItem key={notice._id} Notice={notice} editNotice={editNotice} deleteNotice={deleteNotice} />
           ))
         )}
       </div>

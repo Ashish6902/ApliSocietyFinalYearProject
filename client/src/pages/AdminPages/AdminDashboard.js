@@ -21,12 +21,12 @@ const AdminDashboard = () => {
   return (
     <div className='container'>
       <h1>Dashboard</h1>
-      <Addtransactions addTransaction={addTransaction} />
-      <br />
-      <Link className='btn btn-primary' to='/BalanceSheet'>
+      <Link className='btn btn-primary my-2' to='/BalanceSheet'>
         Balance Sheet
       </Link>
-      <br />
+
+      <Addtransactions addTransaction={addTransaction} />
+      
       <table className='table table-bordered'>
         <thead>
           <tr>

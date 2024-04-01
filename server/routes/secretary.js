@@ -140,7 +140,6 @@ router.delete("/deletenotice/:id", fetchuser,checkUserRole('Admin'), async (req,
             email: req.body.email,
             password: hashedPassword,
             phone: req.body.phone, 
-            role: req.body.role,
             role: "User",
             Address:req.body.Address,
             roomNo:req.body.roomNo

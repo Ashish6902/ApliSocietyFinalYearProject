@@ -3,24 +3,21 @@ const { Schema } = mongoose;
 
 const SocietySchema = new Schema({
     SocietyName:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'user'
+        type:String,
+        required:true,
+        unique: true
     },
     Address : {
         type: String,
         required : true
     }, 
     Contact:{
-        type:int,
+        type:Number,
         required :true
     },
-    AdminName :{
-        type: String,
-        required :true
-    },
-    imageOfSociety : {
-        type: String,
-        required :true
+    date : {
+        type: Date,
+        default : Date.now
     },
 });
 

@@ -34,9 +34,12 @@ const userSchema = new Schema({
     roomNo:{
         type:Number,
         required:true
+    },
+    societyId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Society'
     }
 });
-
 
 const User = mongoose.model('User', userSchema);
 

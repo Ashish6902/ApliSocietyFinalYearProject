@@ -21,14 +21,16 @@ import AdminEvents from './pages/AdminPages/AdminEvents';
 import AdminBalanceSheet from './pages/AdminPages/AdminBalanceSheet';
 import UserCalender from './pages/Users/UserCalender';
 import userRoleContext from './context/Roles/userRoleContext';
-
+import Society from './pages/SuperAdmin/Society';
+import SocietyState from './context/Society/SocietyState';
+import AdminDetails from './pages/SuperAdmin/AdminDetails';
 
 function App() {
 
   const {role} = useContext(userRoleContext);;
   
   return (
-    
+      <SocietyState>
       <NoticeState>
       <MemberState>
       <TransactionState>
@@ -40,14 +42,17 @@ function App() {
           <Route exact path="/contact" element={<Contact />} />
           <Route exact path="/login" element={<Login />} />
           <Route element={<PrivateRoutes/>}>
+              {role === "SuperAdmin" && <Route exact path='/Society' element={<Society/>} />}
+              {role === "SuperAdmin" && <Route exact path='/AdminDetails' element={<AdminDetails/>}/>}
+
               {role === "Admin" && <Route exact path='/AdminDashboard' element={<AdminDashboard/>} />}
               {role === "Admin" &&<Route exact path='/CreateTransaction' element={<CreateTransaction/>} />}
               {role === "Admin" &&<Route exact path='/CreateMembers' element={<CreateMembers/>} />}
               {role === "Admin" &&<Route exact path='/CreateNotice' element={<CreateNotice/>} />}
-              {role === "Admin" &&<Route exact path='/GetNotices' element={<Notices/>} />}
+              <Route exact path='/GetNotices' element={<Notices/>} />
               {role === "Admin" &&<Route exact path='/Calender' element={<AdminEvents/>} /> }{/*rendering AdminEvent ar calender route */}
 
-              {role === "User" &&<Route exact path='/BalanceSheet' element={<AdminBalanceSheet/>} />}
+              <Route exact path='/BalanceSheet' element={<AdminBalanceSheet/>} />
               {role === "User" &&<Route exact path='/GetTransactions' element={<Transactions/>} />}
               {role === "User" &&<Route exact path='/GetMembers' element={<Members/>} />}
               {role === "User" &&<Route exact path='/UserCalender' element={<UserCalender/>} />}
@@ -58,6 +63,7 @@ function App() {
       </TransactionState>
       </MemberState>
       </NoticeState>
+      </SocietyState>
   );
 }
 
