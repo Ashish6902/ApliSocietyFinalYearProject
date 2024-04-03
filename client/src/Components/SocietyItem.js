@@ -17,10 +17,14 @@ const SocietyItem = (props) => {
       <td>{formatDate(date)}</td>
       <td>{Address}</td>
       <td>{Contact}</td>
-      <td><Link className='btn btn-primary my-2' to='/AdminDetails'>
-        Get Details
-      </Link>
+      <td>
+        <Link className='btn btn-primary my-2 mx-2' to='/AdminDetails'>
+          Get Details
+        </Link>
+        <button className='btn btn-primary my-2 mx-2'>Update</button>
+        <button className='btn btn-primary my-2 mx-2'>Delete</button>
       </td>
+
     </tr>
   );
 }

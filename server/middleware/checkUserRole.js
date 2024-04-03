@@ -23,6 +23,8 @@ const checkUserRole = (requiredRole) => {
 
             // Check if the user's role matches the required role
             if (user.role !== requiredRole) {
+                console.log(user.role);
+                console.log(requiredRole)
                 return res.status(403).json({ error: 'Forbidden', message: 'You do not have permission to access this resource' });
             }
 

@@ -11,8 +11,8 @@ router.use(express.json());
 // Route 1: Create Society using: POST "/api/superAdmin/AddSociety" ---> Login required
 router.post("/AddSociety", fetchuser, checkUserRole('SuperAdmin'),
     [
-        body("SocietyName", "Title cannot be empty").exists(),
-        body("Address", "Description should be at least 5 characters").exists(),
+        body("SocietyName", "SocietyName cannot be empty").exists(),
+        body("Address", "Address cannot be empty ").exists(),
         body("Contact").isLength({ min: 10 })
     ],
     async (req, res) => {

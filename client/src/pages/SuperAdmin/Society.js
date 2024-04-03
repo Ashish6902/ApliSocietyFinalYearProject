@@ -1,9 +1,25 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import SocietyContext from '../../context/Society/SocietyContext';
 import SocietyItem from '../../Components/SocietyItem';
 
 const Society = () => {
-  const { Society } = useContext(SocietyContext);
+  const { Society, addSociety } = useContext(SocietyContext);
+  const [SocietyName, setSocietyName] = useState('');
+  const [Address, setAddress] = useState('');
+  const [Contact, setContact] = useState('');
+
+  const handleNameChange = (e) => setSocietyName(e.target.value);
+  const handleAddressChange = (e) => setAddress(e.target.value);
+  const handleContactChange = (e) => setContact(e.target.value);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
+    addSociety(SocietyName,Address,Contact);
+    setSocietyName('');
+    setAddress('');
+    setContact('');
+  };
 
   return (
     <>
@@ -21,24 +37,24 @@ const Society = () => {
                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div className="modal-body">
-                <form>
+                <form onSubmit={handleSubmit}>
                   <div className="mb-3">
                     <label htmlFor="title" className="col-form-label">Name:</label>
-                    <input type="text" className="form-control" id="title" name="title" />
+                    <input type="text" className="form-control" id="title" name="title" value={SocietyName} onChange={handleNameChange} />
                   </div>
                   <div className="mb-3">
                     <label htmlFor="description" className="col-form-label">Address:</label>
-                    <textarea className="form-control" id="description" name="description"></textarea>
+                    <textarea className="form-control" id="description" name="description" value={Address} onChange={handleAddressChange}></textarea>
                   </div>
                   <div className="mb-3">
                     <label htmlFor="contact" className="col-form-label">Contact:</label>
-                    <input type="number" className="form-control" id="contact" name="contact" />
+                    <input type="number" className="form-control" id="contact" name="contact" value={Contact} onChange={handleContactChange} />
+                  </div>
+                  <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" className="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
                   </div>
                 </form>
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" className="btn btn-primary">Save changes</button>
               </div>
             </div>
           </div>
@@ -57,7 +73,11 @@ const Society = () => {
             </tr>
           </thead>
           <tbody>
-            {!Array.isArray(Society) || Society.length === 0 ? 'No societies to display' : (
+            {(!Array.isArray(Society) || Society.length === 0) ? (
+              <tr>
+                <td colSpan="4">No societies to display</td>
+              </tr>
+            ) : (
               Society.map((society) => (
                 <SocietyItem key={society._id} Society={society} />
               ))

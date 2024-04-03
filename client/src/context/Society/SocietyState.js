@@ -30,15 +30,15 @@ useEffect(() => {
 }, [authToken, getAllSoticies]);
 
 //Add society
- const addSociety = async (title, description, date) => {
+ const addSociety = async (SocietyName, Address, Contact) => {
   // Api call
-  const response = await fetch(`${host}/api/secretary/addnotice`, {
+  const response = await fetch(`${host}/api/superAdmin/AddSociety`, {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
           'auth-token': authToken
       },
-      body: JSON.stringify({ title, description, date })
+      body: JSON.stringify({ SocietyName, Address, Contact })
   });
   const society = await response.json();
   setSociety([...Society, society]);
