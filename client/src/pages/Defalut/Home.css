@@ -1,0 +1,10 @@
+.carousel-item {
+  height: 60vh; /* Set the desired height for the carousel items */
+  margin-top: 4px;
+}
+
+.carousel-image {
+  height: 100%;
+  width: 100%;
+  object-fit: cover; /* Ensure the image covers the entire item */
+}

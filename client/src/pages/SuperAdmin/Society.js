@@ -23,7 +23,7 @@ const Society = () => {
 
   return (
     <>
-      <div className='container'>
+      <div className='container-md'>
         <button type="button" className="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
           Add
         </button>
@@ -61,29 +61,32 @@ const Society = () => {
         </div>
       </div>
 
-      <div className='container'>
+      <div className='container-md'>
         <h1>Societies</h1>
-        <table className='table table-bordered'>
-          <thead>
-            <tr>
-              <th scope='col'>Society Name</th>
-              <th scope='col'>Date</th>
-              <th scope='col'>Address</th>
-              <th scope='col'>Contact</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(!Array.isArray(Society) || Society.length === 0) ? (
+        <div className="table-responsive">
+          <table className='table table-bordered'>
+            <thead>
               <tr>
-                <td colSpan="4">No societies to display</td>
+                <th scope='col'>Society Name</th>
+                <th scope='col'>Date</th>
+                <th scope='col'>Address</th>
+                <th scope='col'>Contact</th>
+                <th></th>
               </tr>
-            ) : (
-              Society.map((society) => (
-                <SocietyItem key={society._id} Society={society} />
-              ))
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {(!Array.isArray(Society) || Society.length === 0) ? (
+                <tr>
+                  <td colSpan="4">No societies to display</td>
+                </tr>
+              ) : (
+                Society.map((society) => (
+                  <SocietyItem key={society._id} Society={society} />
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   )

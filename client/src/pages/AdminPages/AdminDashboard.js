@@ -33,6 +33,7 @@ const AdminDashboard = () => {
             <th scope='col'>Description</th>
             <th scope='col'>Date</th>
             <th scope='col'>Amount</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>

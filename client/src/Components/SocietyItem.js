@@ -19,7 +19,7 @@ const SocietyItem = (props) => {
       <td>{Contact}</td>
       <td>
         <Link className='btn btn-primary my-2 mx-2' to='/AdminDetails'>
-          Get Details
+          Admin info
         </Link>
         <button className='btn btn-primary my-2 mx-2'>Update</button>
         <button className='btn btn-primary my-2 mx-2'>Delete</button>

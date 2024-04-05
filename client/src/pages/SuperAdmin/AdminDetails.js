@@ -17,8 +17,8 @@ const AdminDetails = () => {
    const hadleEmailchange =(e)=> setemail(e.target.value);
    const handlePasswordChange = (e) => setPassword(e.target.value);
   return (
-    <div className='container'>
-        <div className='container'>
+    <div className='container-md'>
+        <div className='container-md'>
         <button type="button" className="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
           Add
         </button>
@@ -66,7 +66,7 @@ const AdminDetails = () => {
             </div>
           </div>
         </div>
-
+        
         
       </div>
     </div>

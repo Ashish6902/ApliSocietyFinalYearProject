@@ -32,7 +32,7 @@ const userSchema = new Schema({
         required:true
     },
     roomNo:{
-        type:Number,
+        type:String,
         required:true
     },
     societyId: {
