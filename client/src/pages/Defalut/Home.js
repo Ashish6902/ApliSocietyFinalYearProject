@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image1 from '../../Images/1.jpeg';
 import Image3 from '../../Images/3.jpeg';
 import Image4 from '../../Images/4.jpeg';
 import './Home.css'
 
 const Home = () => {
+  useEffect(() => {
+    const interval = setInterval(() => {
+      document.querySelector('.carousel-control-next').click();
+    }, 4000); // Adjust the duration here, 5000 milliseconds = 5 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="container-md">
       <div id="carouselExample" className="carousel slide">

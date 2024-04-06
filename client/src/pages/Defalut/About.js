@@ -17,7 +17,6 @@ const About = () => {
 
       <section class="blog-post">
         <h2>Funds stuff info</h2>
-
         <p>
         Effortlessly Manage Housing Society Finances: Bid farewell to manual collection hassles.
         Our automated system streamlines dues collection, ensuring prompt and secure transactions,

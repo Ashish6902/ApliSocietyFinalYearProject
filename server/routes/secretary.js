@@ -19,11 +19,12 @@ router.post("/addnotice",fetchuser, checkUserRole('Admin'),
     [
       body("title", "Title cannot be empty").exists(),
       body("description", "Description should be atleast 5 charactes").exists(),
-      body("date","date is required").exists()
+      body("date","date is required").exists(),
+      body("societyId","SocietyIDrequired").exists()
     ],
     async (req, res) => {
       try {
-        const { title, description, date } = req.body;
+        const { title, description, date, societyId } = req.body;
         //check validations
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -33,7 +34,8 @@ router.post("/addnotice",fetchuser, checkUserRole('Admin'),
         const notice = new Notice({
           title,
           description,
-          date
+          date,
+          societyId
         });
   
         const saveNotice = await notice.save();
@@ -49,7 +51,9 @@ router.post("/addnotice",fetchuser, checkUserRole('Admin'),
 //Route 2 : Read  Notice using : get "/api/secretary/fetchnotices --->  Login required user or admin
 router.get("/fetchnotices", fetchuser, async (req, res) => {
   try {
-    const notice = await Notice.find();
+    const societyId = req.user.societyId
+    console.log(societyId)
+    const notice = await Notice.find({societyId});
     res.json(notice);
   } catch (error) {
     console.error(error);
@@ -57,25 +61,33 @@ router.get("/fetchnotices", fetchuser, async (req, res) => {
   }
 });
 
-//Route 3 : update an exitsting Notice using : post "/api/secretary/updatenotice" required
-router.put("/updatenotice/:id", fetchuser,checkUserRole('Admin'), async (req, res) => {
+//route 3 : updeat Notice using :put "/api/secretary/updatenotice"
+router.put("/updatenotice/:id", fetchuser, checkUserRole('Admin'), async (req, res) => {
   const { title, description, date } = req.body;
   try {
     // Create a newNotice object
     const newNotice = {};
     if (title) newNotice.title = title;
     if (description) newNotice.description = description;
-    const newDate = new Date(date); // Assume 'date' is the received date string
-    const utcDate = new Date(Date.UTC(newDate.getFullYear(), newDate.getMonth(), newDate.getDate()));
-    if (date) newNotice.date = new Date(utcDate);
-    
-    // Find the notice to be updated and update it
-    const notice = await Notice.findById(req.params.id);
-
-    if (!notice) {
-      return res.status(404).json({ error: "notice not found" });
+    if (date) {
+      const newDate = new Date(date);
+      const utcDate = new Date(Date.UTC(newDate.getFullYear(), newDate.getMonth(), newDate.getDate()));
+      newNotice.date = utcDate;
     }
 
+    // Find the notice to be updated
+    const notice = await Notice.findOne({ _id: req.params.id });
+
+    if (!notice) {
+      return res.status(404).json({ error: "Notice not found" });
+    }
+
+    // Check if user has permission to update this notice
+    if (notice.societyId.toString() !== req.user.societyId.toString()) {
+      return res.status(403).json({ error: "You do not have permission to update this notice" });
+    }
+
+    // Update the notice
     const updatedNotice = await Notice.findByIdAndUpdate(req.params.id, newNotice, {
       new: true,
     });
@@ -87,8 +99,10 @@ router.put("/updatenotice/:id", fetchuser,checkUserRole('Admin'), async (req, re
   }
 });
 
+
+
 // Route 4: Delete an existing notice using DELETE "/api/secretary/deletenotice/:id"
-router.delete("/deletenotice/:id", fetchuser,checkUserRole('Admin'), async (req, res) => {
+router.delete("/deletenotice/:id", fetchuser, checkUserRole('Admin'), async (req, res) => {
   try {
     // Find the notice to be deleted
     const notice = await Notice.findById(req.params.id);
@@ -97,16 +111,22 @@ router.delete("/deletenotice/:id", fetchuser,checkUserRole('Admin'), async (req,
       return res.status(404).json({ error: "Notice not found" });
     }
 
+    // Check if user has permission to delete this notice
+    if (notice.societyId.toString() !== req.user.societyId.toString()) {
+      return res.status(403).json({ error: "You do not have permission to delete this notice" });
+    }
+
     // Delete the notice
     await Notice.findByIdAndDelete(req.params.id);
 
     // Send a success message
-    res.json({ message: "notice deleted successfully" });
+    res.json({ message: "Notice deleted successfully" });
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ error: "Server Error" });
   }
 });
+
 
   //Second // Route 1:Create members using: POST "api/secretary/Addmembers". require Admin Login 
   router.post('/Addmembers', fetchuser,checkUserRole('Admin'),[

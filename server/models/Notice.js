@@ -14,7 +14,10 @@ const NoticeSchema = new Schema({
         type: Date,
         required:true
     },//format YYYY-MM--DD
-    
+    societyId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Society'
+    }
 });
 
 module.exports = mongoose.model('Notice' , NoticeSchema);

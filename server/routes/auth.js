@@ -33,7 +33,8 @@ router.post('/login', [
             return res.status(400).json("Login with correct Credentials");
         }
         const data = {
-            id: user.id
+            id: user.id,
+            societyId: user.societyId
         };
         const userID = user.id;
         const authtoken = jwt.sign(data, JWT_SECRET);

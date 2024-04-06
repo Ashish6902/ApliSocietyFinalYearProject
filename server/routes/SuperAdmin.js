@@ -59,8 +59,37 @@ router.get("/SocietyList", fetchuser,checkUserRole('SuperAdmin'), async (req, re
       res.status(500).send("Server Error");
     }
   });
+
+  //Route 3 : update an exitsting Notice using : post "/api/secretary/UpdateSociety" required
+router.put("/UpdateSociety/:id", fetchuser,checkUserRole('SuperAdmin'), async (req, res) => {
+    const { SocietyName, Address, Contact } = req.body;
+    try {
+      // Create a newSocietydata object
+      const newSocietydata = {};
+      if (SocietyName) newSocietydata.SocietyName = SocietyName;
+      if (Address) newSocietydata.Address = Address;
+      if (Contact) newSocietydata.Contact = Contact;
+      
+      // Find the society to be updated and update it
+      const society = await Society.findById(req.params.id);
   
-// Route 3: Create user using POST "api/superAdmin/Addadmin". 
+      if (!society) {
+        return res.status(404).json({ error: "notice not found" });
+      }
+  
+      const updatedSociety = await Society.findByIdAndUpdate(req.params.id, newSocietydata, {
+        new: true,
+      });
+  
+      res.json( updatedSociety);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: "Server Error" });
+    }
+  });
+  
+  
+// Route 4: Create user using POST "api/superAdmin/Addadmin". 
 router.post('/Addadmin', fetchuser, checkUserRole('SuperAdmin'),[
     body('email').isEmail(),
     body('name').isLength({ min: 3 }),
@@ -112,7 +141,9 @@ router.post('/Addadmin', fetchuser, checkUserRole('SuperAdmin'),[
         res.status(500).send('Server Error');
     }
 });
-// Route 4: Get users with role 'Admin' and specific society ID using GET "api/superAdmin/GetAllAdmins".
+
+
+// Route 5: Get users with role 'Admin' and specific society ID using GET "api/superAdmin/GetAllAdmins".
 router.get("/GetAllAdmins", fetchuser, checkUserRole('SuperAdmin'), async (req, res) => {
     try {
         const { societyId } = req.body; // Accessing societyId from request body
