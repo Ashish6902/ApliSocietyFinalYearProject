@@ -143,7 +143,6 @@ router.post('/Addadmin', fetchuser, checkUserRole('SuperAdmin'),[
     }
 });
 
-
 // Route 5: Get users with role 'Admin' and specific society ID using GET "api/superAdmin/GetAllAdmins".
 router.get("/GetAllAdmins", fetchuser, checkUserRole('SuperAdmin'), async (req, res) => {
     try {

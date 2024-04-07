@@ -14,7 +14,10 @@ const fundsSchema = new Schema({
         type: Number,
         required : true,
     },
-   
+    societyId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Society'
+    }
 });
 
 module.exports = mongoose.model('Funds' , fundsSchema);

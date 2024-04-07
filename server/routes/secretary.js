@@ -20,22 +20,21 @@ router.post("/addnotice",fetchuser, checkUserRole('Admin'),
       body("title", "Title cannot be empty").exists(),
       body("description", "Description should be atleast 5 charactes").exists(),
       body("date","date is required").exists(),
-      body("societyId","SocietyIDrequired").exists()
     ],
     async (req, res) => {
       try {
-        const { title, description, date, societyId } = req.body;
+        const { title, description, date } = req.body;
         //check validations
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
           return res.status(400).json({ errors: errors.array() });
         }
-  
+        co
         const notice = new Notice({
           title,
           description,
           date,
-          societyId
+          societyId : req.user.societyId
         });
   
         const saveNotice = await notice.save();
@@ -99,7 +98,6 @@ router.put("/updatenotice/:id", fetchuser, checkUserRole('Admin'), async (req, r
   }
 });
 
-
 // Route 4: Delete an existing notice using DELETE "/api/secretary/deletenotice/:id"
 router.delete("/deletenotice/:id", fetchuser, checkUserRole('Admin'), async (req, res) => {
   try {
@@ -126,16 +124,14 @@ router.delete("/deletenotice/:id", fetchuser, checkUserRole('Admin'), async (req
   }
 });
 
-
-  //Second // Route 1:Create members using: POST "api/secretary/Addmembers". require Admin Login 
-  router.post('/Addmembers', fetchuser,checkUserRole('Admin'),[
+//Second // Route 1:Create members using: POST "api/secretary/Addmembers". require Admin Login 
+router.post('/Addmembers', fetchuser,checkUserRole('Admin'),[
     body('email').isEmail(),
     body('name').isLength({ min: 3 }),
     body('password').isLength({ min: 5 }),
     body('phone').isLength({min:10}),
     body('Address').isLength({min:10}),
-    body('roomNo').exists(),
-    body("societyId","SocietyIDrequired").exists()
+    body('roomNo').exists()
   ], async (req, res) => {
     // Check validations
     const errors = validationResult(req);
@@ -163,7 +159,7 @@ router.delete("/deletenotice/:id", fetchuser, checkUserRole('Admin'), async (req
             role: "User",
             Address:req.body.Address,
             roomNo:req.body.roomNo,
-            societyId:req.body.societyId
+            societyId:req.user.societyId
         });
 
         const saveUser = await newUser.save();
@@ -174,13 +170,12 @@ router.delete("/deletenotice/:id", fetchuser, checkUserRole('Admin'), async (req
         console.error(error);
         res.status(500).send('Server Error');
     }
-  });
+});
 
 //Second // Route 2: Fetch members using: POST "api/secretary/fetchmembers". require  Login admin or user 
 router.get("/fetchmembers", fetchuser,checkUserRole('Admin'), async (req, res) => {
   try {
     const societyId = req.user.societyId
-    console.log(societyId)
     const user = await User.find({societyId,role:"User"}).select("-password");
     res.json(user);
   } catch (error) {
@@ -233,15 +228,8 @@ router.post('/AddFunds', fetchuser, checkUserRole('Admin'), [
       information: req.body.information,
       date: req.body.date,
       amount: req.body.amount,
+      societyId:req.user.societyId
     });
-
-    if (req.body.User) {
-      const user = await User.findById(req.body.User);
-      if (!user) {
-        return res.status(400).json({ error: 'User not found' });
-      }
-      fund.user = req.body.User;
-    }
 
     // Return response with the created fund
     res.json(fund );
@@ -254,7 +242,8 @@ router.post('/AddFunds', fetchuser, checkUserRole('Admin'), [
 //Third //Route 2 fetch Funds using: POST "api/secretary/fetchFunds". require Admin Login 
 router.get("/fetchFunds", fetchuser, async (req, res) => {
   try {
-    const funds = await Funds.find();
+    const societyId = req.user.societyId
+    const funds = await Funds.find({societyId});
     res.json(funds);
   } catch (error) {
     console.error(error);
@@ -272,6 +261,11 @@ router.delete("/deleteFunds/:id", fetchuser,checkUserRole('Admin'), async (req, 
       return res.status(404).json({ error: "transaction not found" });
     }
 
+    // Check if user has permission to delete this notice
+    if (funds.societyId.toString() !== req.user.societyId.toString()) {
+      return res.status(403).json({ error: "You do not have permission to delete this notice" });
+    }
+
     // Delete the notice
     await Funds.findByIdAndDelete(req.params.id);
 
@@ -286,8 +280,9 @@ router.delete("/deleteFunds/:id", fetchuser,checkUserRole('Admin'), async (req, 
 //to fetchTotal amount 
 router.get("/TotalFunds", fetchuser, async (req, res) => {
   try {
+    const societyId = req.user.societyId
     let Totalfunds =0;
-    const funds = await Funds.find();
+    const funds = await Funds.find({societyId});
     
     funds.forEach(fund=>{
       Totalfunds += fund.amount
