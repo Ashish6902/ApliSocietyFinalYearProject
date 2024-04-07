@@ -97,6 +97,7 @@ router.post('/Addadmin', fetchuser, checkUserRole('SuperAdmin'),[
     body('phone').isLength({ min: 10 }),
     body('Address').isLength({ min: 10 }),
     body('roomNo').exists(),
+    body('societyId').exists()
     // body('societyId').isMongoId() // Assuming societyId is provided in the request body and is a valid MongoDB ObjectId
 ], async (req, res) => {
     // Check validations
@@ -125,9 +126,9 @@ router.post('/Addadmin', fetchuser, checkUserRole('SuperAdmin'),[
             role: "Admin",
             Address: req.body.Address,
             roomNo: req.body.roomNo,
-            society: req.body.societyId // Assign societyId from request body to society field
+            societyId: req.body.societyId // Assign societyId from request body to society field
         });
-
+                                                                                                                                                                                                            
         // Generate JWT token
         const tokenData = {
             id: newUser.id

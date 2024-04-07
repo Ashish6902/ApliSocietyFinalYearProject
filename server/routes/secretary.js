@@ -100,7 +100,6 @@ router.put("/updatenotice/:id", fetchuser, checkUserRole('Admin'), async (req, r
 });
 
 
-
 // Route 4: Delete an existing notice using DELETE "/api/secretary/deletenotice/:id"
 router.delete("/deletenotice/:id", fetchuser, checkUserRole('Admin'), async (req, res) => {
   try {
@@ -135,7 +134,8 @@ router.delete("/deletenotice/:id", fetchuser, checkUserRole('Admin'), async (req
     body('password').isLength({ min: 5 }),
     body('phone').isLength({min:10}),
     body('Address').isLength({min:10}),
-    body('roomNo').exists()
+    body('roomNo').exists(),
+    body("societyId","SocietyIDrequired").exists()
   ], async (req, res) => {
     // Check validations
     const errors = validationResult(req);
@@ -162,7 +162,8 @@ router.delete("/deletenotice/:id", fetchuser, checkUserRole('Admin'), async (req
             phone: req.body.phone, 
             role: "User",
             Address:req.body.Address,
-            roomNo:req.body.roomNo
+            roomNo:req.body.roomNo,
+            societyId:req.body.societyId
         });
 
         const saveUser = await newUser.save();
@@ -176,9 +177,11 @@ router.delete("/deletenotice/:id", fetchuser, checkUserRole('Admin'), async (req
   });
 
 //Second // Route 2: Fetch members using: POST "api/secretary/fetchmembers". require  Login admin or user 
-router.get("/fetchmembers", fetchuser, async (req, res) => {
+router.get("/fetchmembers", fetchuser,checkUserRole('Admin'), async (req, res) => {
   try {
-    const user = await User.find().select("-password");
+    const societyId = req.user.societyId
+    console.log(societyId)
+    const user = await User.find({societyId,role:"User"}).select("-password");
     res.json(user);
   } catch (error) {
     console.error(error);
@@ -186,7 +189,7 @@ router.get("/fetchmembers", fetchuser, async (req, res) => {
   }
 });
 
-//second // Route 3: Delete an existing user using DELETE "/api/secretary/deleteuser/:id"
+//second // Route 3: Delete an existing user using DELETE "/api/secretary/deleteuser/:id"//haven't test it yet
 router.delete("/deleteUser/:id", fetchuser,checkUserRole('Admin'), async (req, res) => {
   try {
     // Find the notice to be deleted
@@ -194,6 +197,11 @@ router.delete("/deleteUser/:id", fetchuser,checkUserRole('Admin'), async (req, r
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
+    }
+
+     // Check if user has permission to delete this notice
+     if (user.societyId.toString() !== req.user.societyId.toString()) {
+      return res.status(403).json({ error: "You do not have permission to delete this notice" });
     }
 
     // Delete the notice
@@ -211,7 +219,7 @@ router.delete("/deleteUser/:id", fetchuser,checkUserRole('Admin'), async (req, r
 router.post('/AddFunds', fetchuser, checkUserRole('Admin'), [
   body('information').isLength({ min: 5 }),
   body('date').exists(),
-  body('amount').exists()
+  body('amount').exists(),
 ], async (req, res) => {
   // Check validations
   const errors = validationResult(req);
