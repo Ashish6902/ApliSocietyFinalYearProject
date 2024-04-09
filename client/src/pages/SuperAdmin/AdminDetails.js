@@ -1,22 +1,36 @@
-import React,{useState} from 'react'
+import React, { useState, useContext, useEffect } from 'react';
+import AdminsDataContext from '../../context/AdminsData/AdminsDataContext';
+import { useLocation } from 'react-router-dom';
+import AdminDataItem from '../../Components/AdminDataItem';
 
 const AdminDetails = () => {
-
+  const location = useLocation();
+  const { Adminsdata, getAllAdmins } = useContext(AdminsDataContext);
+  useEffect(() => {
+    // Ensure location.state exists and contains the expected id
+    if (location.state) {
+      getAllAdmins(location.state);
+      console.log(Adminsdata)
+    }
+    // eslint-disable-next-line 
+  }, [location]);
   const [Name, setName] = useState('');
-  const [email, setemail] =useState('');
+  const [email, setemail] = useState('');
   const [phone, setphone] = useState('');
   const [Address, setAddress] = useState('');
   const [roomNo, setRoomNo] = useState('');
-  const [password,setPassword] = useState("password123")
+  const [password, setPassword] = useState("password123");
 
-   // Add other event handlers for each input field
-   const handleNameChange = (e) => setName(e.target.value);
-   const handleAddressChange = (e) => setAddress(e.target.value);
-   const handlePhoneChange = (e) => setphone(e.target.value);
-   const handleRoomNoChange = (e) => setRoomNo(e.target.value);
-   const hadleEmailchange =(e)=> setemail(e.target.value);
-   const handlePasswordChange = (e) => setPassword(e.target.value);
+  // Add other event handlers for each input field
+  const handleNameChange = (e) => setName(e.target.value);
+  const handleAddressChange = (e) => setAddress(e.target.value);
+  const handlePhoneChange = (e) => setphone(e.target.value);
+  const handleRoomNoChange = (e) => setRoomNo(e.target.value);
+  const hadleEmailchange = (e) => setemail(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
+
   return (
+    
     <div className='container-md'>
         <div className='container-md'>
         <button type="button" className="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -67,7 +81,31 @@ const AdminDetails = () => {
           </div>
         </div>
         
-        
+          <div className="table-responsive">
+            <table className='table table-bordered'>
+              <thead>
+                <tr>
+                  <th scope='col'> Name</th>
+                  <th scope='col'>Email</th>
+                  <th scope='col'>Phone</th>
+                  <th scope='col'>Address</th>
+                  <th scope='col'>RoomNO</th>
+                  <th scope='col'></th>
+                </tr>
+              </thead>
+              <tbody>
+                {(!Array.isArray(Adminsdata) || Adminsdata.length === 0) ? (
+                  <tr>
+                    <td colSpan="4">No societies to display</td>
+                  </tr>
+                ) : (
+                  Adminsdata.map((admin) => (
+                    <AdminDataItem key={admin._id} admin={admin} />
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
       </div>
     </div>
   )

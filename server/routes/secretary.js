@@ -29,7 +29,6 @@ router.post("/addnotice",fetchuser, checkUserRole('Admin'),
         if (!errors.isEmpty()) {
           return res.status(400).json({ errors: errors.array() });
         }
-        co
         const notice = new Notice({
           title,
           description,
@@ -51,7 +50,6 @@ router.post("/addnotice",fetchuser, checkUserRole('Admin'),
 router.get("/fetchnotices", fetchuser, async (req, res) => {
   try {
     const societyId = req.user.societyId
-    console.log(societyId)
     const notice = await Notice.find({societyId});
     res.json(notice);
   } catch (error) {

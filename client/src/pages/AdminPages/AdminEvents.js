@@ -51,7 +51,7 @@ const AdminEvents = () => {
                 </Modal.Header>
                 <Modal.Body>{selectedNote ? selectedNote.extendedProps.description : ''}</Modal.Body>
                 <Modal.Footer>
-                    <button type="button" class="btn btn-secondary" onClick={handleClose}>Close</button>
+                    <button type="button" className="btn btn-secondary" onClick={handleClose}>Close</button>
                 </Modal.Footer>
             </Modal>
         </div>

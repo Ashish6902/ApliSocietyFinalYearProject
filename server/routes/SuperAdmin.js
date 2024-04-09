@@ -12,10 +12,6 @@ require('dotenv').config()
 // Load JWT Secret from environment variable
 const JWT_SECRET = process.env.JWT_SECRET;
 
-
-// Middleware to parse JSON bodies
-router.use(express.json());
-
 // Route 1: Create Society using: POST "/api/superAdmin/AddSociety" ---> Login required
 router.post("/AddSociety", fetchuser, checkUserRole('SuperAdmin'),
     [
@@ -88,8 +84,10 @@ router.put("/UpdateSociety/:id", fetchuser,checkUserRole('SuperAdmin'), async (r
     }
   });
   
-  
-// Route 4: Create user using POST "api/superAdmin/Addadmin". 
+//Route 4: Delete Secretary using DELET "api/superAdmin/DeleteSociety"
+
+
+// Route 5: Create Admin using POST "api/superAdmin/Addadmin". 
 router.post('/Addadmin', fetchuser, checkUserRole('SuperAdmin'),[
     body('email').isEmail(),
     body('name').isLength({ min: 3 }),
@@ -143,10 +141,10 @@ router.post('/Addadmin', fetchuser, checkUserRole('SuperAdmin'),[
     }
 });
 
-// Route 5: Get users with role 'Admin' and specific society ID using GET "api/superAdmin/GetAllAdmins".
-router.get("/GetAllAdmins", fetchuser, checkUserRole('SuperAdmin'), async (req, res) => {
+router.post("/GetAllAdmins", fetchuser, checkUserRole('SuperAdmin'), async (req, res) => {
     try {
         const { societyId } = req.body; // Accessing societyId from request body
+        console.log("upcoming societyId", societyId);
         if (!societyId) {
             return res.status(400).json({ msg: "Society ID is required" });
         }
@@ -159,6 +157,9 @@ router.get("/GetAllAdmins", fetchuser, checkUserRole('SuperAdmin'), async (req, 
         res.status(500).send("Server Error");
     }
 });
+
+
+
 
 
 module.exports = router;

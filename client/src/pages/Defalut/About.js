@@ -1,10 +1,9 @@
 import React from 'react'
-import './About.css'
 
 const About = () => {
   return (
-    <div class="container-md my-4">
-      <section class="blog-post">
+    <div className="container-md my-4">
+      <section className="blog-post">
         <h2>Society happening</h2>
         <p>
           Connect with your neighbors, share ideas, and stay informed about
@@ -15,7 +14,7 @@ const About = () => {
         </p>
       </section>
 
-      <section class="blog-post">
+      <section className="blog-post">
         <h2>Funds stuff info</h2>
         <p>
         Effortlessly Manage Housing Society Finances: Bid farewell to manual collection hassles.

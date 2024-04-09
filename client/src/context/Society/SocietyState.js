@@ -44,8 +44,22 @@ useEffect(() => {
   setSociety([...Society, society]);
 }
 
+//editSociety
+const editSociety = async (id, SocietyName, Address, Contact) => {
+  // Api call
+  await fetch(`${host}/api/superAdmin/UpdateSociety/${id}`, {
+      method: 'PUT',
+      headers: {
+          'Content-Type': 'application/json',
+          'auth-token': authToken
+      },
+      body: JSON.stringify({SocietyName, Address, Contact })
+  });
+  setSociety(Society.map(society => society._id === id ? { ...society, SocietyName, Address, Contact } : society));
+}
+
   return (
-    <SocietyContext.Provider value={{Society,getAllSoticies,addSociety}}>
+    <SocietyContext.Provider value={{Society,getAllSoticies,addSociety,editSociety}}>
       {props.children}
     </SocietyContext.Provider>
   );

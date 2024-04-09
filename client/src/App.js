@@ -24,12 +24,14 @@ import userRoleContext from './context/Roles/userRoleContext';
 import Society from './pages/SuperAdmin/Society';
 import SocietyState from './context/Society/SocietyState';
 import AdminDetails from './pages/SuperAdmin/AdminDetails';
+import AdminState from './context/AdminsData/AdminState'
 
 function App() {
 
   const {role} = useContext(userRoleContext);;
   
   return (
+      <AdminState>
       <SocietyState>
       <NoticeState>
       <MemberState>
@@ -64,6 +66,7 @@ function App() {
       </MemberState>
       </NoticeState>
       </SocietyState>
+      </AdminState>
   );
 }
 
