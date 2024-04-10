@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import AdminsDataContext from './AdminsDataContext';
 
-const MemberState = (props) => {
+const AdminState = (props) => {
   const host = 'http://localhost:5000';
   const authToken = localStorage.getItem('authToken');
   const [Adminsdata, setAdminData] = useState([]);
@@ -32,13 +32,26 @@ useEffect(() => {
   }
 }, [authToken, getAllAdmins]);
 
+const addAdmins = async (name, email, password, phone, Address, roomNo,societyId) => {
+  // Api call
+  const response = await fetch(`${host}/api/superAdmin/Addadmin`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'auth-token': authToken
+      },
+      body: JSON.stringify({ name, email, password, phone, Address, roomNo,societyId})
+  });
+  const admin = await response.json();
+  setAdminData([...Adminsdata,admin]);
+}
 
 
   return (
-    <AdminsDataContext.Provider value={{Adminsdata,getAllAdmins}}>
+    <AdminsDataContext.Provider value={{Adminsdata,getAllAdmins,addAdmins}}>
       {props.children}
     </AdminsDataContext.Provider>
   );
 };
 
-export default MemberState;
+export default AdminState;

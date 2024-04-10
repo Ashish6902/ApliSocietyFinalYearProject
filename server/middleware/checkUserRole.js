@@ -21,11 +21,14 @@ const checkUserRole = (requiredRole) => {
                 return res.status(401).send({ error: "User not found" });
             }
 
+            console.log(user.role !== requiredRole)
+            console.log(user.role)
+            console.log(requiredRole)
+            console.log(user.role === requiredRole)
             // Check if the user's role matches the required role
             if (user.role !== requiredRole) {
                 return res.status(403).json({ error: 'Forbidden', message: 'You do not have permission to access this resource' });
             }
-
             // If the user's role matches, attach the user object to the request
             req.user = user;
             next();

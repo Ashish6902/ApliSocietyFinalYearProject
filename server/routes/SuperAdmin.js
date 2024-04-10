@@ -127,14 +127,9 @@ router.post('/Addadmin', fetchuser, checkUserRole('SuperAdmin'),[
             societyId: req.body.societyId // Assign societyId from request body to society field
         });
                                                                                                                                                                                                             
-        // Generate JWT token
-        const tokenData = {
-            id: newUser.id
-        };
-        const authtoken = jwt.sign(tokenData, JWT_SECRET);
 
         // Return response with token
-        res.json({ authtoken });
+        res.json(newUser);
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');

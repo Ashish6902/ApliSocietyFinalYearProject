@@ -80,6 +80,13 @@ const NavBar = () => {
                                     
                                 </>
                             )}
+                            {authToken && role === "SuperAdmin" &&( 
+                                <>
+                                    <li className="nav-item">
+                                        <Link className={`nav-link ${location.pathname === '/Society' ? "active" : ""}`} to="/Society">Societies</Link>
+                                    </li>
+                                </>
+                            )}
                         </ul>
                         <div className="collapse navbar-collapse d-flex justify-content-end" id="navbarNav" >
                         <ul className="navbar-nav ">
