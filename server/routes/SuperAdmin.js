@@ -85,7 +85,25 @@ router.put("/UpdateSociety/:id", fetchuser,checkUserRole('SuperAdmin'), async (r
   });
   
 //Route 4: Delete Secretary using DELET "api/superAdmin/DeleteSociety"
-
+router.delete("/deleteAdmin/:id", fetchuser,checkUserRole('SuperAdmin'), async (req, res) => {
+    try {
+      // Find the notice to be deleted
+      const user = await User.findById(req.params.id);
+  
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+  
+      // Delete the Admin
+      await User.findByIdAndDelete(req.params.id);
+  
+      // Send a success message
+      res.json({ message: "User deleted successfully" });
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ error: "Server Error" });
+    }
+  });
 
 // Route 5: Create Admin using POST "api/superAdmin/Addadmin". 
 router.post('/Addadmin', fetchuser, checkUserRole('SuperAdmin'),[

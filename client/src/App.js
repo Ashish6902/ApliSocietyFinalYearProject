@@ -51,14 +51,14 @@ function App() {
               {role === "Admin" &&<Route exact path='/CreateTransaction' element={<CreateTransaction/>} />}
               {role === "Admin" &&<Route exact path='/CreateMembers' element={<CreateMembers/>} />}
               {role === "Admin" &&<Route exact path='/CreateNotice' element={<CreateNotice/>} />}
-              <Route exact path='/GetNotices' element={<Notices/>} />
               {role === "Admin" &&<Route exact path='/Calender' element={<AdminEvents/>} /> }{/*rendering AdminEvent ar calender route */}
 
-              <Route exact path='/BalanceSheet' element={<AdminBalanceSheet/>} />
-              {role === "User" &&<Route exact path='/GetTransactions' element={<Transactions/>} />}
               {role === "User" &&<Route exact path='/GetMembers' element={<Members/>} />}
+              {role === "User" &&<Route exact path='/GetTransactions' element={<Transactions/>} />}
               {role === "User" &&<Route exact path='/UserCalender' element={<UserCalender/>} />}
 
+              <Route exact path='/BalanceSheet' element={<AdminBalanceSheet/>} />
+              <Route exact path='/GetNotices' element={<Notices/>} />
           </Route>
         </Routes>
       </Router>

@@ -197,7 +197,7 @@ router.delete("/deleteUser/:id", fetchuser,checkUserRole('Admin'), async (req, r
       return res.status(403).json({ error: "You do not have permission to delete this notice" });
     }
 
-    // Delete the notice
+    // Delete the user
     await User.findByIdAndDelete(req.params.id);
 
     // Send a success message
