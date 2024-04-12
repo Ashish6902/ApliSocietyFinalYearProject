@@ -157,7 +157,6 @@ router.post('/Addadmin', fetchuser, checkUserRole('SuperAdmin'),[
 router.post("/GetAllAdmins", fetchuser, checkUserRole('SuperAdmin'), async (req, res) => {
     try {
         const { societyId } = req.body; // Accessing societyId from request body
-        console.log("upcoming societyId", societyId);
         if (!societyId) {
             return res.status(400).json({ msg: "Society ID is required" });
         }

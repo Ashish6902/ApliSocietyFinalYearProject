@@ -7,15 +7,50 @@ const Society = () => {
   const [SocietyName, setSocietyName] = useState('');
   const [Address, setAddress] = useState('');
   const [Contact, setContact] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [addressError, setAddressError] = useState('');
+  const [contactError, setContactError] = useState('');
 
-  const handleNameChange = (e) => setSocietyName(e.target.value);
-  const handleAddressChange = (e) => setAddress(e.target.value);
-  const handleContactChange = (e) => setContact(e.target.value);
+  const handleNameChange = (e) => {
+    setSocietyName(e.target.value);
+    setNameError('');
+  };
+
+  const handleAddressChange = (e) => {
+    setAddress(e.target.value);
+    setAddressError('');
+  };
+
+  const handleContactChange = (e) => {
+    const contactValue = e.target.value;
+    if (/^\d{0,10}$/.test(contactValue)) {
+      setContact(contactValue);
+      setContactError('');
+    } else {
+      setContactError('Contact number should have at most 10 digits.');
+    }
+  };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
-    addSociety(SocietyName,Address,Contact);
+
+    if (SocietyName.trim() === '') {
+      setNameError('Please enter a name for the society.');
+      return;
+    }
+
+    if (Address.trim() === '') {
+      setAddressError('Please enter an address for the society.');
+      return;
+    }
+
+    if (Contact.trim() === '' || Contact.length !== 10) {
+      setContactError('Please enter a valid 10-digit contact number for the society.');
+      return;
+    }
+
+    addSociety(SocietyName, Address, Contact);
     setSocietyName('');
     setAddress('');
     setContact('');
@@ -40,19 +75,22 @@ const Society = () => {
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
                     <label htmlFor="title" className="col-form-label">Name:</label>
-                    <input type="text" className="form-control" id="title" name="title" value={SocietyName} onChange={handleNameChange} />
+                    <input type="text" className={`form-control ${nameError ? 'is-invalid' : ''}`} id="title" name="title" value={SocietyName} onChange={handleNameChange} />
+                    {nameError && <div className="invalid-feedback">{nameError}</div>}
                   </div>
                   <div className="mb-3">
                     <label htmlFor="description" className="col-form-label">Address:</label>
-                    <textarea className="form-control" id="description" name="description" value={Address} onChange={handleAddressChange}></textarea>
+                    <textarea className={`form-control ${addressError ? 'is-invalid' : ''}`} id="description" name="description" value={Address} onChange={handleAddressChange}></textarea>
+                    {addressError && <div className="invalid-feedback">{addressError}</div>}
                   </div>
                   <div className="mb-3">
                     <label htmlFor="contact" className="col-form-label">Contact:</label>
-                    <input type="number" className="form-control" id="contact" name="contact" value={Contact} onChange={handleContactChange} />
+                    <input type="number" className={`form-control ${contactError ? 'is-invalid' : ''}`} id="contact" name="contact" value={Contact} onChange={handleContactChange} />
+                    {contactError && <div className="invalid-feedback">{contactError}</div>}
                   </div>
                   <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" className="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                    <button type="submit" className="btn btn-primary">Save changes</button>
                   </div>
                 </form>
               </div>

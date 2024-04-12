@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect,useRef } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import AdminsDataContext from '../../context/AdminsData/AdminsDataContext';
 import { useLocation } from 'react-router-dom';
 import AdminDataItem from '../../Components/AdminDataItem';
@@ -24,10 +24,36 @@ const AdminDetails = () => {
     societyId: location.state
   });
 
+  const [errors, setErrors] = useState({});
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { name, email, password, phone, Address, roomNo,societyId } = formData;
-    addAdmins(name, email, password, phone, Address, roomNo,societyId);
+
+    // Validation
+    const errors = {};
+    if (formData.name.trim() === '') {
+      errors.name = 'Please enter a name.';
+    }
+    if (formData.email.trim() === '') {
+      errors.email = 'Please enter an email.';
+    }
+    if (formData.phone.trim() === '') {
+      errors.phone = 'Please enter a phone number.';
+    }
+    if (formData.phone.length !== 10) {
+      errors.phone = 'Phone number should be 10 digits.';
+    }
+    if (formData.Address.trim() === '') {
+      errors.Address = 'Please enter an address.';
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setErrors(errors);
+      return;
+    }
+
+    // If no errors, submit form
+    addAdmins(formData.name, formData.email, formData.password, formData.phone, formData.Address, formData.roomNo, formData.societyId);
     setFormData({
       name: '',
       email: '',
@@ -42,6 +68,7 @@ const AdminDetails = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: '' }); // Clear validation error when user types
   };
 
   return (
@@ -62,11 +89,13 @@ const AdminDetails = () => {
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
                     <label htmlFor="title" className="col-form-label">Name:</label>
-                    <input type="text" className="form-control" id="title" name="name" value={formData.name} onChange={handleChange} />
+                    <input type="text" className={`form-control ${errors.name ? 'is-invalid' : ''}`} id="title" name="name" value={formData.name} onChange={handleChange} />
+                    {errors.name && <div className="invalid-feedback">{errors.name}</div>}
                   </div>
                   <div className="mb-3">
                     <label htmlFor="description" className="col-form-label">Email:</label>
-                    <input type='email' className="form-control" id="description" name="email" value={formData.email} onChange={handleChange} />
+                    <input type='email' className={`form-control ${errors.email ? 'is-invalid' : ''}`} id="description" name="email" value={formData.email} onChange={handleChange} />
+                    {errors.email && <div className="invalid-feedback">{errors.email}</div>}
                   </div>
                   <div className="mb-3">
                     <label htmlFor="contact" className="col-form-label">Password:</label>
@@ -74,11 +103,13 @@ const AdminDetails = () => {
                   </div>
                   <div className="mb-3">
                     <label htmlFor="Phone" className="col-form-label">Phone:</label>
-                    <input type="number" className="form-control" id="Phone" name="phone" value={formData.phone} onChange={handleChange} />
+                    <input type="number" className={`form-control ${errors.phone ? 'is-invalid' : ''}`} id="Phone" name="phone" value={formData.phone} onChange={handleChange} />
+                    {errors.phone && <div className="invalid-feedback">{errors.phone}</div>}
                   </div>
                   <div className="mb-3">
                     <label htmlFor="Address" className="col-form-label">Address:</label>
-                    <textarea className="form-control" id="Address" name="Address" value={formData.Address} onChange={handleChange} />
+                    <textarea className={`form-control ${errors.Address ? 'is-invalid' : ''}`} id="Address" name="Address" value={formData.Address} onChange={handleChange} />
+                    {errors.Address && <div className="invalid-feedback">{errors.Address}</div>}
                   </div>
                   <div className="mb-3">
                     <label htmlFor="roomNo" className="col-form-label">Room No:</label>
@@ -93,7 +124,7 @@ const AdminDetails = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="table-responsive">
           <table className='table table-bordered'>
             <thead>
