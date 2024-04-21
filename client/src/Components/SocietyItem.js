@@ -58,9 +58,9 @@ const SocietyItem = (props) => {
       {/* <Link className='btn btn-primary my-2 mx-2' to={{ pathname: '/AdminDetails', state: { test: 'test' } }}>
   Admin info
 </Link> */}
-<Link className='btn btn-primary my-2 mx-2' to={{ pathname : "/AdminDetails" }} state={_id}> Admin info</Link>
+<Link className='btn btn-info my-2 mx-2' to={{ pathname : "/AdminDetails" }} state={_id}> Admin info</Link>
 
-        <button type="button" className="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target={`#exampleModal${_id}`}>
+        <button type="button" className="btn btn-warning my-2" data-bs-toggle="modal" data-bs-target={`#exampleModal${_id}`}>
           Update
         </button>
 

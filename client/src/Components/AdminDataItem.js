@@ -20,7 +20,7 @@ const AdminDataItem = ({ admin }) => {
       <td>{roomNo}</td>
       <td>
         <div>
-          <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target={`#deleteModal${_id}`}>
+          <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target={`#deleteModal${_id}`}>
             Delete
           </button>
           <div className="modal fade" id={`deleteModal${_id}`} tabIndex="-1" aria-labelledby={`deleteModalLabel${_id}`} aria-hidden="true">
@@ -32,7 +32,7 @@ const AdminDataItem = ({ admin }) => {
                 </div>
                 <div className="modal-footer">
                   <button ref={refCloseDelete} type="button" className="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                  <button type="button" className="btn btn-primary" onClick={handleDelete}>Yes</button>
+                  <button type="button" className="btn btn-warning" onClick={handleDelete}>Yes</button>
                 </div>
               </div>
             </div>

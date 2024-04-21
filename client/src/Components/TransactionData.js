@@ -47,13 +47,15 @@ const TransactionData = () => {
     <div className='container'>
       <h3>Total Amount: {totalFunds}</h3>
       <Link className='btn btn-primary' to='/BalanceSheet'>Balance Sheet</Link>
-      <div>
+      <br/>
+      <div className='my-4 d-inline'>
         <label htmlFor="startDate">Start Date: </label>
-        <input type="date" id="startDate" value={startDate} onChange={handleStartDateChange} />
+        <input className="mx-2" type="date" id="startDate" value={startDate} onChange={handleStartDateChange} />
+        <p className='d-inline mx-2 my-2'>to</p>
       </div>
-      <div>
+      <div className='my-4 d-inline'>
         <label htmlFor="endDate">End Date: </label>
-        <input type="date" id="endDate" value={endDate} onChange={handleEndDateChange} />
+        <input className="mx-2 my-2" type="date" id="endDate" value={endDate} onChange={handleEndDateChange} />
       </div>
       {sortedFilteredTransactions.length === 0 ? 'No transactions to display' : (
         sortedFilteredTransactions.map((transaction) => (

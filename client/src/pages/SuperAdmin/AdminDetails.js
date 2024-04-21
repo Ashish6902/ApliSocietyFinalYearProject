@@ -75,7 +75,7 @@ const AdminDetails = () => {
     <div className='container-md'>
       <div className='container-md'>
         <button type="button" className="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          Add
+          Add <i class="fa-regular fa-square-plus"></i>
         </button>
 
         <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -116,8 +116,8 @@ const AdminDetails = () => {
                     <input type="text" className="form-control" id="roomNo" name="roomNo" value={formData.roomNo} onChange={handleChange} />
                   </div>
                   <div className="modal-footer">
-                    <button ref={refAdd} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" className="btn btn-primary">Save changes</button>
+                    <button ref={refAdd} type="button" className="btn btn-warning" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" className="btn btn-success">Save changes</button>
                   </div>
                 </form>
               </div>
@@ -126,8 +126,8 @@ const AdminDetails = () => {
         </div>
 
         <div className="table-responsive">
-          <table className='table table-bordered'>
-            <thead>
+          <table className='table table-hover table-bordered'>
+            <thead className='table-dark'>
               <tr>
                 <th scope='col'>Name</th>
                 <th scope='col'>Email</th>

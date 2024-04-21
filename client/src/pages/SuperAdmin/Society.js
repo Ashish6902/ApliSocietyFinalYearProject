@@ -60,7 +60,7 @@ const Society = () => {
     <>
       <div className='container-md'>
         <button type="button" className="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          Add
+          Add <i class="fa-regular fa-square-plus"></i>
         </button>
 
         {/* modal */}
@@ -89,8 +89,8 @@ const Society = () => {
                     {contactError && <div className="invalid-feedback">{contactError}</div>}
                   </div>
                   <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" className="btn btn-primary">Save changes</button>
+                    <button type="button" className="btn btn-warning" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" className="btn btn-success">Save changes</button>
                   </div>
                 </form>
               </div>
@@ -102,8 +102,8 @@ const Society = () => {
       <div className='container-md'>
         <h1>Societies</h1>
         <div className="table-responsive">
-          <table className='table table-bordered'>
-            <thead>
+          <table className='table table-bordered table-hover'>
+            <thead className='table-dark'>
               <tr>
                 <th scope='col'>Society Name</th>
                 <th scope='col'>Date</th>

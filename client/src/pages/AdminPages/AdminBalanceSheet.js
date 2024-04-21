@@ -72,8 +72,8 @@ const AdminBalanceSheet = () => {
        <label htmlFor="endDate">End Date: </label>
        <input className="mx-2 my-2"  type="date" id="endDate" value={endDate} onChange={handleEndDateChange} />
      </div>
-     <table className="table table-bordered my-5" >
-        <thead>
+     <table className="table table-bordered table-hover my-5" >
+        <thead className='table-dark'>
           <tr>
             <th scope="col">Date</th>
             <th scope="col">Description</th>
@@ -99,6 +99,7 @@ const AdminBalanceSheet = () => {
        </tr>
         </tbody>
       </table>
+      <button className="btn btn-primary" onClick={() => window.print()}>Print Balance Sheet</button>
     </div>
   );
 };

@@ -27,8 +27,8 @@ const AdminDashboard = () => {
 
       <Addtransactions addTransaction={addTransaction} />
       
-      <table className='table table-bordered'>
-        <thead>
+      <table className='table table-bordered table-hover'>
+        <thead className='table-dark'>
           <tr>
             <th scope='col'>Description</th>
             <th scope='col'>Date</th>
