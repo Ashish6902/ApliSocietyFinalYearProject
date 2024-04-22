@@ -56,7 +56,7 @@ router.put("/updateUser/:id", fetchuser, async (req, res) => {
 });
 
 // Route: Change password POST "/api/user/changepassword"
-router.put("/changepassword/:id", fetchuser, checkUserRole('User'), async (req, res) => {
+router.put("/changepassword/:id", fetchuser, async (req, res) => {
   const { currentPass, newPass } = req.body; // Updated to match the body fields in your API call
   try {
     // Find the user by ID

@@ -50,7 +50,7 @@ const CreateMembers = () => {
         <h1>Members</h1>
 
         <div>
-          <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          <button type="button" className="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Add <i class="fa-regular fa-square-plus"></i>
           </button>
 

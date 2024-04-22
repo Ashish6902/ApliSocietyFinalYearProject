@@ -9,7 +9,7 @@ const AddingNotes = (props) => {
     <div>
       {/*button to open modal */}
       <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Add
+        Add <i className="fa-regular fa-square-plus"></i>
       </button>
 
       {/*modal  */}

@@ -14,14 +14,15 @@ const FetchMembers = ({ members }) => {
 
   return (
     <div>
-      <table className="table">
-        <thead className="thead-dark">
+      <table className="table table-hover table-bordered">
+        <thead className="table-dark">
           <tr>
             <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Phone</th>
             <th scope="col">Address</th>
             <th scope="col">Room No</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -34,8 +35,8 @@ const FetchMembers = ({ members }) => {
               <td>{member.roomNo}</td>
               <td>
                 <div>
-                  <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target={`#deleteModal${member._id}`}>
-                    Delete
+                  <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target={`#deleteModal${member._id}`}>
+                    Delete <i className="fa-solid fa-trash"></i>
                   </button>
                   <div className="modal fade" id={`deleteModal${member._id}`} tabIndex="-1" aria-labelledby={`deleteModalLabel${member._id}`} aria-hidden="true">
                     <div className="modal-dialog">

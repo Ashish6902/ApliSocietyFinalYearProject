@@ -64,20 +64,21 @@ const Members = () => {
   return (
     <div className="container">
       {Member && (
-        <div>
+        <div className="container">
           <h2>Member Details</h2>
-          <p><strong>Name:</strong> {Member.name}</p>
-          <p><strong>Email:</strong> {Member.email}</p>
-          <p><strong>Phone:</strong> {Member.phone}</p>
-          <p><strong>Address:</strong> {Member.Address}</p>
-          <p><strong>Room No:</strong> {Member.roomNo}</p>
-          <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal">
-            Update
-          </button>
-          <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ResePasstModal">
-            Reset password
-          </button>
-
+          <div className="container" style={{ border: "1px solid black" }}>
+            <p className="my-2 px-2" style={{ border: "1px solid black" }}><strong>Name:</strong> {Member.name}</p>
+            <p className="my-2 px-2" style={{ border: "1px solid black" }}><strong>Email:</strong> {Member.email}</p>
+            <p className="my-2 px-2" style={{ border: "1px solid black" }}><strong>Phone:</strong> {Member.phone}</p>
+            <p className="my-2 px-2" style={{ border: "1px solid black" }}><strong>Address:</strong> {Member.Address}</p>
+            <p className="my-2 px-2" style={{ border: "1px solid black" }}><strong>Room No:</strong> {Member.roomNo}</p>
+            <button type="button" className="btn btn-warning my-2" data-bs-toggle="modal" data-bs-target="#updateModal">
+              Update
+            </button>
+            <button type="button" className="btn btn-warning mx-2" data-bs-toggle="modal" data-bs-target="#ResePasstModal">
+              Reset password
+            </button>
+          </div>
         </div>
       )}
 
@@ -86,7 +87,7 @@ const Members = () => {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h1 className="modal-title fs-5" id="updateModalLabel">Modal title</h1>
+              <h1 className="modal-title fs-5" id="updateModalLabel">Update Details</h1>
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">

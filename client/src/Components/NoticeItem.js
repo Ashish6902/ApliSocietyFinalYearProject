@@ -45,13 +45,13 @@ const NoteItem = ({ Notice, editNotice, deleteNotice }) => {
             <li className="list-group-item d-flex justify-content-between">
               <div>
                 {/* button to open update modal */}
-                <button type="button" className="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target={`#updateModal${Notice._id}`}>
+                <button type="button" className="btn btn-warning me-2" data-bs-toggle="modal" data-bs-target={`#updateModal${Notice._id}`}>
                   Update
                 </button>
 
                 {/* button to open delete modal */}
-                <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target={`#deleteModal${Notice._id}`}>
-                  Delete
+                <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target={`#deleteModal${Notice._id}`}>
+                  Delete <i className="fa-solid fa-trash"></i>
                 </button>
               </div>
 

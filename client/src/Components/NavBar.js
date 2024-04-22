@@ -63,6 +63,9 @@ const NavBar = () => {
                                     <li className="nav-item">
                                         <Link className={`nav-link ${location.pathname === '/Calender' ? "active" : ""}`} to="/Calender">Calender</Link>
                                     </li>
+                                    <li className="nav-item">
+                                        <Link className={`nav-link ${location.pathname === '/AdminData' ? "active" : ""}`} to="/AdminData">User</Link>
+                                    </li>
                                     
                                 </>
                             )}

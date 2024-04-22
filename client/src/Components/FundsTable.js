@@ -26,7 +26,7 @@ const FundsTable = (props) => {
       <td>{amount}</td>
       <td>
         <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target={`#deleteModal${props.funds._id}`}>
-        <i className="fa-solid fa-trash"></i> Delete 
+         Delete <i className="fa-solid fa-trash"></i>
         </button>
         <div className="modal fade" id={`deleteModal${props.funds._id}`} tabIndex="-1" aria-labelledby={`deleteModalLabel${props.funds._id}`} aria-hidden="true">
           <div className="modal-dialog">

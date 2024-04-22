@@ -24,7 +24,8 @@ import userRoleContext from './context/Roles/userRoleContext';
 import Society from './pages/SuperAdmin/Society';
 import SocietyState from './context/Society/SocietyState';
 import AdminDetails from './pages/SuperAdmin/AdminDetails';
-import AdminState from './context/AdminsData/AdminState'
+import AdminState from './context/AdminsData/AdminState';
+import AdminData from './pages/AdminPages/AdminData';
 
 function App() {
 
@@ -52,6 +53,7 @@ function App() {
               {role === "Admin" &&<Route exact path='/CreateMembers' element={<CreateMembers/>} />}
               {role === "Admin" &&<Route exact path='/CreateNotice' element={<CreateNotice/>} />}
               {role === "Admin" &&<Route exact path='/Calender' element={<AdminEvents/>} /> }{/*rendering AdminEvent ar calender route */}
+              {role === "Admin" &&<Route exact path='/AdminData' element={<AdminData/>}/>}
 
               {role === "User" &&<Route exact path='/GetMembers' element={<Members/>} />}
               {role === "User" &&<Route exact path='/GetTransactions' element={<Transactions/>} />}
