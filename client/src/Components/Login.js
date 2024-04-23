@@ -1,6 +1,7 @@
-import React, { useState,useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import userRoleContext from "../context/Roles/userRoleContext"; 
+import userRoleContext from "../context/Roles/userRoleContext";
+import Notification from './Notification';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -10,7 +11,8 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const { setRole ,setId} = useContext(userRoleContext);
+  const { setRole, setId } = useContext(userRoleContext);
+  const [alert, setAlert] = useState(false); // Use useState hook for alert
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -40,8 +42,7 @@ const Login = () => {
       const Userid = data.userID;
 
       let userRole = await checkRole(authToken);
-      console.log(userRole);
-      setRole(userRole)
+      setRole(userRole);
       switch (userRole) {
         case "User":
           navigate("/GetTransactions");
@@ -52,22 +53,18 @@ const Login = () => {
         case "SuperAdmin":
           navigate("/Society");
           break;
-          
         default:
           break;
       }
-      // Store token in local storage
       localStorage.setItem('authToken', authToken);
-      localStorage.setItem('role',userRole );
-      localStorage.setItem('userId',Userid);
-      // Optionally, redirect or update state to reflect successful login
+      localStorage.setItem('role', userRole);
+      localStorage.setItem('userId', Userid);
     } catch (error) {
+      setAlert(true); // Set alert to true to display the notification
       console.error('Error:', error.message);
-      // Optionally, show an error message to the user
     }
   };
 
-  //checkRole
   const checkRole = async (token) => {
     try {
       const response = await fetch('http://localhost:5000/api/auth/getuserRole', {
@@ -77,22 +74,26 @@ const Login = () => {
           'auth-token': token
         }
       });
-      const data = await response.json(); // Parse response to JSON
-      const role = data.role; // Assuming the response contains a 'role' property
-      const Userid = data._id
-      setRole(role); // Set the role using the provided setRole function
-      setId(Userid)
+      const data = await response.json();
+      const role = data.role;
+      const Userid = data._id;
+      setRole(role);
+      setId(Userid);
       return role;
     } catch (error) {
       console.error('Error checking role:', error.message);
     }
   };
 
-  // Check if authToken exists in localStorage
   const authToken = localStorage.getItem('authToken');
+
+  const handleCloseNotification = () => {
+    setAlert(false);
+  };
 
   return (
     <div className='container my-4 border border-secondary p-4 mb-4'>
+      {alert && <Notification type="danger" msg="Login failed. Please check your credentials." onClose={handleCloseNotification} />}
       {authToken ? (
         <h1>You are already logged in</h1>
       ) : (
@@ -102,13 +103,11 @@ const Login = () => {
             <div className="mb-3">
               <label htmlFor="email" className="form-label">Email address</label>
               <input type="email" className="form-control" id="email" name="email" value={formData.email} onChange={handleInputChange} aria-describedby="emailHelp" autoComplete="email" />
-
               <div id="emailHelp" className="form-text"></div>
             </div>
             <div className="mb-3">
               <label htmlFor="password" className="form-label">Password</label>
               <input type="password" className="form-control" id="password" name="password" value={formData.password} onChange={handleInputChange} autoComplete="current-password" />
-
             </div>
             <button type="submit" className="btn btn-primary">Submit</button>
           </form>

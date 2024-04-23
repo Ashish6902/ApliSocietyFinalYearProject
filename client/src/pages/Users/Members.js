@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import userRoleContext from "../../context/Roles/userRoleContext";
 import MemberContext from "../../context/Members/MemberContext";
+import Notification from "../../Components/Notification";
 
 const Members = () => {
   const { userId } = useContext(userRoleContext);
-  const { getMember, Member, updateMembers,updatePassword } = useContext(MemberContext);
-  const refcolse = useRef(null)
-
+  const { getMember, Member, updateMembers, updatePassword } = useContext(MemberContext);
+  const updateCloseRef = useRef(null);
+  const resetPasswordCloseRef = useRef(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -14,20 +15,19 @@ const Members = () => {
     roomNo: "",
   });
 
-  const [changepassword ,setchangepassword] = useState({
+  const [changepassword, setChangePassword] = useState({
     currentPassword: "",
-    newpassword:"",
+    newpassword: "",
     confirmPassword: ""
-  })
+  });
+
   useEffect(() => {
-    // Fetch member data when the component mounts
     if (userId) {
       getMember(userId);
     }
   }, [getMember, userId]);
 
   useEffect(() => {
-    // Set form data when Member data changes
     if (Member) {
       setFormData({
         name: Member.name,
@@ -41,31 +41,92 @@ const Members = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleChangePass = (e)=>{
-    setchangepassword({ ...changepassword, [e.target.name]: e.target.value });
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Call updateMembers with updated data
-    updateMembers(userId, formData.name, formData.Address, formData.roomNo);
-    refcolse.current.click();
+  const handleChangePass = (e) => {
+    setChangePassword({ ...changepassword, [e.target.name]: e.target.value });
   };
 
-  const handleSubmitPass = (e) =>{
+  const  [errors,setErrors] = useState({});
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if(e.newpassword === e.confirmPassword){
-        console.log("password changed")
-        console.log(e.newpassword)
-        updatePassword(userId,changepassword.currentPassword,changepassword.newpassword);
+    const errors = {};
+  
+    // Validation for Name
+    if (formData.name.trim() === '') {
+      errors.name = 'Please enter a name.';
     }
-    refcolse.current.click();
-  }
+  
+    // Validation for Address
+    if (formData.Address.trim() === '') {
+      errors.Address = 'Please enter an address.';
+    }
+  
+    // Validation for Room No
+    if (formData.roomNo.trim() === '') {
+      errors.roomNo = 'Please enter a room number.';
+    }
+  
+    if (Object.keys(errors).length > 0) {
+      setErrors(errors);
+      return; // Prevent form submission if there are errors
+    }
+  
+    // If all validations pass, proceed to update member details
+    updateMembers(userId, formData.name, formData.Address, formData.roomNo);
+    updateCloseRef.current.click();
+  };
+  
+
+  
+  const handleSubmitPass = async (e) => {
+    e.preventDefault();
+  
+    // Initialize errors object
+    const errors = {};
+  
+    // Check if any fields are empty
+    if (!changepassword.currentPassword || !changepassword.newpassword || !changepassword.confirmPassword) {
+      errors.password = "Please fill in all fields";
+    }
+  
+    // Check if new password matches confirm password
+    if (changepassword.newpassword !== changepassword.confirmPassword) {
+      errors.newpassword = "Passwords don't match";
+    }
+  
+    // If there are errors, setErrors and return to prevent further execution
+    if (Object.keys(errors).length > 0) {
+      setErrors(errors);
+      return;
+    }
+    // Proceed with password update if there are no errors
+      const ans = await updatePassword(userId, changepassword.currentPassword, changepassword.newpassword);
+      if(ans === false){
+        setAlert(true);
+      }else if(ans === true){
+        setalertSucces(true);
+      }
+
+      resetPasswordCloseRef.current.click();
+  };
+  
+  
+  const [alert, setAlert] = useState(false); // Use useState hook for alert
+  const [alertSucces ,setalertSucces] = useState(false);
+
+  const handleCloseNotification = () => {
+    setAlert(false);
+    setalertSucces(false);
+  };
+
 
   return (
     <div className="container">
       {Member && (
         <div className="container">
           <h2>Member Details</h2>
+          {alert && <Notification type="danger" msg=" Current password is Wrong try agin" onClose={handleCloseNotification} />}
+          {alertSucces && <Notification type="success" msg=" Current password is Wrong try agin" onClose={handleCloseNotification} />}
           <div className="container" style={{ border: "1px solid black" }}>
             <p className="my-2 px-2" style={{ border: "1px solid black" }}><strong>Name:</strong> {Member.name}</p>
             <p className="my-2 px-2" style={{ border: "1px solid black" }}><strong>Email:</strong> {Member.email}</p>
@@ -82,7 +143,6 @@ const Members = () => {
         </div>
       )}
 
-      
       <div className="modal fade" id="updateModal" tabIndex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
         <div className="modal-dialog">
           <div className="modal-content">
@@ -91,27 +151,29 @@ const Members = () => {
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
-                <div className="form-group">
-                  <label htmlFor="name">Name:</label>
-                  <input type="text" className="form-control" id="name" name="name" value={formData.name} onChange={handleChange} />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="Address">Address:</label>
-                  <input type="text" className="form-control" id="Address" name="Address" value={formData.Address} onChange={handleChange} />
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                    <label htmlFor="title" className="col-form-label">Name:</label>
+                    <input type="text" className={`form-control ${errors.name ? 'is-invalid' : ''}`} id="title" name="name" value={formData.name} onChange={handleChange} />
+                    {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+                  </div>
+                <div className="mb-3">
+                    <label htmlFor="Address" className="col-form-label">Address:</label>
+                    <textarea className={`form-control ${errors.Address ? 'is-invalid' : ''}`} id="Address" name="Address" value={formData.Address} onChange={handleChange} />
+                    {errors.Address && <div className="invalid-feedback">{errors.Address}</div>}
                 </div>
                 <div className="form-group">
                   <label htmlFor="roomNo">Room No:</label>
-                  <input type="text" className="form-control" id="roomNo" name="roomNo" value={formData.roomNo} onChange={handleChange} />
+                  <input type="text" className={`form-control ${errors.roomNo ? 'is-invalid' : ''}`} id="roomNo" name="roomNo" value={formData.roomNo} onChange={handleChange} />
+                  {errors.roomNo && <div className="invalid-feedback">{errors.roomNo}</div>}
                 </div>
-              </div>
-            <div className="modal-footer">
-              <button ref={refcolse} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" className="btn btn-primary" onClick={handleSubmit}>Save changes</button>
+                <button ref={updateCloseRef} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" className="btn btn-primary my-2 mx-2">Save changes</button>
+              </form>
             </div>
           </div>
         </div>
       </div>
-
 
       <div className="modal fade" id="ResePasstModal" tabIndex="-1" aria-labelledby="ResePasstModalLabel" aria-hidden="true">
         <div className="modal-dialog">
@@ -121,32 +183,31 @@ const Members = () => {
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
-              <div className="form-group">
-                <label htmlFor="currentPassword">Current Password</label>
-                <input type="password" className="form-control" id="currentPassword" name="currentPassword" value={changepassword.currentPassword} onChange={handleChangePass} />
-              </div>
-              <div className="form-group">
-                <label htmlFor="newpassword">New Password:</label>
-                <input type="password" className="form-control" id="newpassword" name="newpassword" value={changepassword.newpassword} onChange={handleChangePass} />
-              </div>
-              <div className="form-group">
-                <label htmlFor="confirmPassword">Confirm password:</label>
-                <input type="password" className="form-control" id="confirmPassword" name="confirmPassword" value={changepassword.confirmPassword} onChange={handleChangePass} />
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button ref={refcolse} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" className="btn btn-primary" onClick={handleSubmitPass}>Save changes</button>
+              <form onSubmit={handleSubmitPass}>
+                <div className="form-group">
+                  <label htmlFor="currentPassword">Current Password</label>
+                  <input type="password" className={`form-control ${errors.password ? 'is-invalid' : ''}`} id="currentPassword" name="currentPassword" value={changepassword.currentPassword} onChange={handleChangePass} />
+                  {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+                </div>
+                <div className="form-group">
+                  <label htmlFor="newpassword">New Password:</label>
+                  <input type="password" className="form-control" id="newpassword" name="newpassword" value={changepassword.newpassword} onChange={handleChangePass} />
+                  {errors.newpassword && <div className="invalid-feedback">{errors.newpassword}</div>}
+                </div>
+                <div className="form-group">
+                  <label htmlFor="confirmPassword">Confirm password:</label>
+                  <input type="password" className={`form-control ${errors.password ? 'is-invalid' : ''}`} id="confirmPassword" name="confirmPassword" value={changepassword.confirmPassword} onChange={handleChangePass} />
+                  {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+                </div>
+                
+                <button ref={resetPasswordCloseRef} type="button" className="btn btn-secondary " data-bs-dismiss="modal">Close</button>
+                <button type="submit" className="btn btn-primary my-2 mx-2">Save changes</button>
+              </form>
             </div>
           </div>
         </div>
       </div>
-
-
-
-
-
-     </div> 
+    </div>
   );
 };
 

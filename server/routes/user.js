@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs');
 
 
 
-  router.post("/fetchmember", fetchuser, checkUserRole('User'), async (req, res) => {
+  router.post("/fetchmember", fetchuser, async (req, res) => {
     try {
       const { _id } = req.body; 
       const user = await User.findById(_id).select("-password -role");
