@@ -1,6 +1,6 @@
 /* Contact.css */
 
-.contact-container {
+.contact-box {
     display: flex;
     flex-direction: column;
     align-items: center;

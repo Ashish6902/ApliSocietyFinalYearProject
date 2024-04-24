@@ -7,7 +7,7 @@ const Contact = () => {
       <header>
         <h2>Contact Us</h2>
       </header>
-      <div className="contact-container">
+      <div className="contact container">
           <div className="contact-info-box">
               <h3>Get in Touch</h3>
               <p>If you have any questions, feedback, or partnership inquiries, please don't hesitate to reach out to us.</p>
