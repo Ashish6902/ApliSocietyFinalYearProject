@@ -8,6 +8,7 @@ const Funds = require("../models/Funds");
 const { body, validationResult } = require("express-validator");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 require('dotenv').config()
 
 // Load JWT Secret from environment variable
@@ -289,6 +290,39 @@ router.get("/TotalFunds", fetchuser, async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send("Server Error");
+  }
+});
+
+// Broadcast Mail
+router.post("/Mail",fetchuser,checkUserRole('Admin'),async(req,res) =>{
+  const {msg} =req.body;
+  const societyId =req.user.societyId
+  const mailIds = await User.find({societyId}).select("email");
+  try {
+     const transporter = nodemailer.createTransport({
+      service : "gmail",
+      auth:{
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASSWORD
+      }
+     });
+     const mailoptions ={
+        from: process.env.EMAIL_USER,
+       to : mailIds,
+       subject : "hello",
+       text: msg
+     }
+
+     transporter.sendMail(mailoptions,(error,info)=>{
+      if(error){
+        console.log("Error",error)
+      }else{
+        console.log("Email sent"+ info.response)
+        res.send("Email sent")
+      }
+     })
+  } catch (error) {
+    
   }
 });
 
