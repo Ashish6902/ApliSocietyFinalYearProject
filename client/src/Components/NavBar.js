@@ -64,8 +64,18 @@ const NavBar = () => {
                                         <Link className={`nav-link ${location.pathname === '/Calender' ? "active" : ""}`} to="/Calender">Calender</Link>
                                     </li>
                                     <li className="nav-item">
+                                        <Link className={`nav-link ${location.pathname === '/BroadCast' ? "active" : ""}`} to="/BroadCast">Boradcast Message</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link className={`nav-link ${location.pathname === '/Complaints' ? "active" : ""}`} to="/Complaints">Complaints</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link className={`nav-link ${location.pathname === '/ResolvedComplaints' ? "active" : ""}`} to="/ResolvedComplaints">Resolved Complaints</Link>
+                                    </li>
+                                    <li className="nav-item">
                                         <Link className={`nav-link ${location.pathname === '/AdminData' ? "active" : ""}`} to="/AdminData">User</Link>
                                     </li>
+                                    
                                     
                                 </>
                             )}

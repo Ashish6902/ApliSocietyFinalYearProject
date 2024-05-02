@@ -295,6 +295,7 @@ router.get("/TotalFunds", fetchuser, async (req, res) => {
 
 // Broadcast Mail
 router.post("/Mail",fetchuser,checkUserRole('Admin'),async(req,res) =>{
+  const {title} =req.body
   const {msg} =req.body;
   const societyId =req.user.societyId
   const mailIds = await User.find({societyId}).select("email");
@@ -309,7 +310,7 @@ router.post("/Mail",fetchuser,checkUserRole('Admin'),async(req,res) =>{
      const mailoptions ={
         from: process.env.EMAIL_USER,
        to : mailIds,
-       subject : "hello",
+       subject : title,
        text: msg
      }
 
@@ -317,15 +318,16 @@ router.post("/Mail",fetchuser,checkUserRole('Admin'),async(req,res) =>{
       if(error){
         console.log("Error",error)
       }else{
-        console.log("Email sent"+ info.response)
         res.send("Email sent")
       }
      })
   } catch (error) {
-    
+     console.log("Error",error)
   }
 });
 
+//Show complaints
+//add complaint in resolve section
 module.exports = router;
 
 

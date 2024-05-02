@@ -26,7 +26,9 @@ import SocietyState from './context/Society/SocietyState';
 import AdminDetails from './pages/SuperAdmin/AdminDetails';
 import AdminState from './context/AdminsData/AdminState';
 import AdminData from './pages/AdminPages/AdminData';
-
+import EmailBoradcast from './pages/AdminPages/EmailBoradcast';
+import ComplaintBox from './pages/AdminPages/ComplaintBox';
+import RessolvedComplaints from './pages/AdminPages/RessolvedComplaints';
 function App() {
 
   const {role} = useContext(userRoleContext);;
@@ -54,6 +56,9 @@ function App() {
               {role === "Admin" &&<Route exact path='/CreateNotice' element={<CreateNotice/>} />}
               {role === "Admin" &&<Route exact path='/Calender' element={<AdminEvents/>} /> }{/*rendering AdminEvent ar calender route */}
               {role === "Admin" &&<Route exact path='/AdminData' element={<AdminData/>}/>}
+              {role === "Admin" &&<Route exact path='/BroadCast' element={<EmailBoradcast/>}/>}
+              {role === "Admin" &&<Route exact path='/Complaints' element={<ComplaintBox/>}/>}
+              {role === "Admin" &&<Route exact path='/ResolvedComplaints' element={<RessolvedComplaints/>}/>}
 
               {role === "User" &&<Route exact path='/GetMembers' element={<Members/>} />}
               {role === "User" &&<Route exact path='/GetTransactions' element={<Transactions/>} />}
