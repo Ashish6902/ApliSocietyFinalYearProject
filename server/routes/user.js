@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 var fetchuser = require("../middleware/fetchuser");
-var checkUserRole = require("../middleware/checkUserRole")
+var checkUserRole = require("../middleware/checkUserRole");
+const { body, validationResult } = require('express-validator');
 const User = require("../models/User");
 const bcrypt = require('bcryptjs');
+const Complaint = require("../models/Complaints");
 
 
 
@@ -88,6 +90,29 @@ router.put("/changepassword/:id", fetchuser, async (req, res) => {
 });
 
 //Create complaints
+router.post('/addcomplaints', fetchuser, checkUserRole('User'), [
+  body('Complaint').exists(),
+], async (req, res) => {
+  // Check validations
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
 
+  try {
+    // Create a new fund
+    const complaint = await Complaint.create({
+      Complaint: req.body.Complaint,
+      isActive: true,
+      societyId:req.user.societyId
+    });
+
+    // Return response with the created fund
+    res.json(complaint );
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server Error' });
+  }
+});
 
 module.exports= router;

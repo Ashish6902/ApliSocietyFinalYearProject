@@ -28,7 +28,7 @@ import AdminState from './context/AdminsData/AdminState';
 import AdminData from './pages/AdminPages/AdminData';
 import EmailBoradcast from './pages/AdminPages/EmailBoradcast';
 import ComplaintBox from './pages/AdminPages/ComplaintBox';
-import RessolvedComplaints from './pages/AdminPages/RessolvedComplaints';
+import Complaints from './pages/Users/Complaints';
 function App() {
 
   const {role} = useContext(userRoleContext);;
@@ -58,11 +58,12 @@ function App() {
               {role === "Admin" &&<Route exact path='/AdminData' element={<AdminData/>}/>}
               {role === "Admin" &&<Route exact path='/BroadCast' element={<EmailBoradcast/>}/>}
               {role === "Admin" &&<Route exact path='/Complaints' element={<ComplaintBox/>}/>}
-              {role === "Admin" &&<Route exact path='/ResolvedComplaints' element={<RessolvedComplaints/>}/>}
+
 
               {role === "User" &&<Route exact path='/GetMembers' element={<Members/>} />}
               {role === "User" &&<Route exact path='/GetTransactions' element={<Transactions/>} />}
               {role === "User" &&<Route exact path='/UserCalender' element={<UserCalender/>} />}
+              {role === "User" &&<Route exact path='/Complaints' element={<Complaints/>} />}
 
               <Route exact path='/BalanceSheet' element={<AdminBalanceSheet/>} />
               <Route exact path='/GetNotices' element={<Notices/>} />

@@ -18,9 +18,11 @@ const AdminEvents = () => {
                 const eventsData = notices.map(notice => ({
                     title: notice.title,
                     date: notice.date,
-                    description: notice.description
+                    description: notice.description,
+                    timeText: formatTime(notice.date) // Format the time here
                 }));
                 setEvents(eventsData);
+                console.log(eventsData)
             } catch (error) {
                 console.error('Error fetching notices:', error);
             }
@@ -60,10 +62,19 @@ const AdminEvents = () => {
 
 const renderEventContent = (eventInfo) => {
     return (
-        <div style={{ backgroundColor: 'blue', color: 'white', padding: '5px', borderRadius: '5px' }}>
-            {eventInfo.event.title}
-        </div>
+        <>
+            <b>{eventInfo.timeText}</b>
+            <div style={{ backgroundColor: 'blue', color: 'white', padding: '5px', borderRadius: '5px' }}>
+                {eventInfo.event.title}
+            </div>
+        </>
     );
+};
+
+// Function to format the time
+const formatTime = (date) => {
+    const options = { hour: 'numeric', minute: 'numeric', hour12: true };
+    return new Date(date).toLocaleTimeString('en-US', options);
 };
 
 export default AdminEvents;

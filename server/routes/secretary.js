@@ -10,6 +10,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 require('dotenv').config()
+const Complaint = require("../models/Complaints");
+const Meeting = require("../models/Meeting");
 
 // Load JWT Secret from environment variable
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -327,7 +329,86 @@ router.post("/Mail",fetchuser,checkUserRole('Admin'),async(req,res) =>{
 });
 
 //Show complaints
-//add complaint in resolve section
+router.get("/fetchcomplaints", fetchuser, checkUserRole('Admin'), async (req, res) => {
+  try {
+    const societyId = req.user.societyId
+    const complaint = await Complaint.find({societyId});
+    res.json(complaint);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error");
+  }
+});
+
+//Resolved compliant
+router.put('/Resolvedcomplaint/:id', fetchuser, checkUserRole('Admin'), async (req, res) => {
+  try {
+    // Find the complaint by ID
+    const complaint = await Complaint.findById(req.params.id);
+
+    if (!complaint) {
+      return res.status(404).json({ error: 'Complaint not found' });
+    }
+
+    // Toggle the isActive property of the complaint
+    complaint.isActive = !complaint.isActive;
+
+    // Save the updated complaint
+    await complaint.save();
+
+    // Return response with the updated complaint
+    res.json(complaint);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server Error' });
+  }
+});
+
+//add meetings
+router.post("/addMeeting",fetchuser, checkUserRole('Admin'),
+    [
+      body("title", "Title cannot be empty").exists(),
+      body("description", "Description should be atleast 5 charactes").exists(),
+      body("date","date is required").exists(),
+      body("time","date is required").exists(),
+    ],
+    async (req, res) => {
+      try {
+        const { title, description, date,time } = req.body;
+        //check validations
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+          return res.status(400).json({ errors: errors.array() });
+        }
+        const meeting = new Meeting({
+          title,
+          description,
+          date,
+          time,
+          societyId : req.user.societyId
+        });
+  
+        const saveMeeting = await meeting.save();
+  
+        res.json(saveMeeting);
+      } catch (error) {
+        console.error(error);
+        res.status(500).send("Server Error");
+      }
+    }
+  );
+
+//fetch meetings
+router.get("/fetchmeetings", fetchuser, async (req, res) => {
+  try {
+    const societyId = req.user.societyId
+    const meeting = await Meeting.find({societyId});
+    res.json(meeting);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error");
+  }
+});
 module.exports = router;
 
 
