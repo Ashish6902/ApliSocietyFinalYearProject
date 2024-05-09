@@ -9,7 +9,6 @@ const AdminState = (props) => {
 // Fetch Society
 const getAllAdmins = useCallback(async (id) => {
   try {
-    console.log("id is" ,id)
     const response = await fetch(`${host}/api/superAdmin/GetAllAdmins`, {
       method: 'POST', // Change the method to POST
       headers: {

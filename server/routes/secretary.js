@@ -402,6 +402,7 @@ router.post("/addMeeting",fetchuser, checkUserRole('Admin'),
 router.get("/fetchmeetings", fetchuser, async (req, res) => {
   try {
     const societyId = req.user.societyId
+    console.log(societyId)
     const meeting = await Meeting.find({societyId});
     res.json(meeting);
   } catch (error) {
