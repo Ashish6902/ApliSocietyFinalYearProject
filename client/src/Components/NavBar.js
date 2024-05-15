@@ -19,9 +19,25 @@ const NavBar = () => {
         setRole("");
     };
 
+    function scrollToSection(event) {
+        event.preventDefault();
+        const targetId = event.target.getAttribute('href').substring(1); // Get the target section ID
+        const targetSection = document.getElementById(targetId);
+        
+        if (targetSection) {
+            const offsetTop = targetSection.getBoundingClientRect().top + window.pageYOffset; // Calculate the offset considering page scrolling
+            window.scrollTo({
+                top: offsetTop, // Scroll to the calculated offset
+                behavior: 'smooth' // Enable smooth scrolling behavior
+            });
+        }
+    }
+    
+    
+
     return (
         <>
-            <nav className="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+            <nav className="navbar navbar-expand-lg sticky-top " style={{ backgroundColor: '#b8e2f2', fontWeight: 'bold' }}>
                 <div className="container-fluid d-flex">
                     <Link className="navbar-brand" to="/">Apli Society</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,13 +98,13 @@ const NavBar = () => {
                             {!authToken && ( // Render links only if the user is not logged in
                                 <>
                                     <li className="nav-item">
-                                        <Link className={`nav-link ${location.pathname === '/' ? "active" : ""}`} to="/">Home</Link>
+                                    <a href="#home-section" className={`nav-link `} onClick={scrollToSection}>Home</a>
                                     </li>
                                     <li className="nav-item">
-                                        <Link className={`nav-link ${location.pathname === '/about' ? "active" : ""}`} to="/about">AboutUs</Link>
+                                        <a href="#about-section" className={`nav-link `} onClick={scrollToSection}>AboutUs</a>
                                     </li>
                                     <li className="nav-item">
-                                        <Link className={`nav-link ${location.pathname === '/contact' ? "active" : ""}`} to="/contact">Contact</Link>
+                                        <a href="#contact-section" className={`nav-link`} onClick={scrollToSection}>Contact</a>
                                     </li>
                                     
                                 </>
@@ -104,10 +120,10 @@ const NavBar = () => {
                         <div className="collapse navbar-collapse d-flex justify-content-end" id="navbarNav" >
                         <ul className="navbar-nav ">
                             {!authToken && <li className="nav-item">
-                                            <Link className={`btn btn-outline-success mx-2`} to="/login">Login</Link>
+                                            <Link className={`btn btn-success mx-2`} to="/login">Login</Link>
                             </li>}
                             {authToken && ( // Render logout button if user is logged in
-                                <button className="btn btn-outline-warning mx-2" onClick={handleLogout}>Logout</button>
+                                <button className="btn btn-warning mx-2" onClick={handleLogout}>Logout</button>
                             )}
                         </ul>                                   
                     </div>

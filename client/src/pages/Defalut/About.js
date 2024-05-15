@@ -3,7 +3,7 @@ import './About.css';
 
 const About = () => {
   return (
-    <div className='outsideBox'>
+    <div className='outsideBox about-section'>
       <div className="container my-4 box">
         <section className="blog-post">
           <h2>Society happening</h2>
