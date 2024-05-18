@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Notification from '../../Components/Notification'; // Update the path as per your project structure
+import './Complaints.css'; // Import CSS file for styling
 
 const Complaints = () => {
   const [complaint, setComplaint] = useState('');
@@ -42,7 +43,7 @@ const Complaints = () => {
   };
 
   return (
-    <div>
+    <div className="complaints-container">
       {notification && (
         <Notification
           type={notification.type}
@@ -53,6 +54,7 @@ const Complaints = () => {
       <h2>Complaints</h2>
       <form onSubmit={handleSubmit}>
         <textarea
+          className="complaints-textarea"
           value={complaint}
           onChange={handleChange}
           placeholder="Enter your complaint"
@@ -60,7 +62,7 @@ const Complaints = () => {
           cols={50}
         />
         <br />
-        <button type="submit">Submit</button>
+        <button className="complaints-submit-btn" type="submit">Submit</button>
       </form>
     </div>
   );

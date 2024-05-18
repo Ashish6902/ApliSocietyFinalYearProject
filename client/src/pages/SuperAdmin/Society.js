@@ -60,9 +60,6 @@ const Society = () => {
   return (
     <>
       <div className='container-md'>
-        <button type="button" className="btn btn-primary my-2" onClick={() => setShowModal(true)}>
-          Add <i class="fa-regular fa-square-plus"></i>
-        </button>
 
         {/* modal */}
         {showModal && (
@@ -104,6 +101,10 @@ const Society = () => {
 
       <div className='container-md'>
         <h1>Societies</h1>
+        <button type="button" className="btn btn-primary my-2" onClick={() => setShowModal(true)}>
+          Add <i class="fa-regular fa-square-plus"></i>
+        </button>
+        
         <div className="table-responsive">
           <table className='table table-bordered table-hover'>
             <thead className='table-dark'>

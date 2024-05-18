@@ -14,6 +14,10 @@ const NoticeSchema = new Schema({
         type: Date,
         required:true
     },//format YYYY-MM--DD
+    Noticeimage :{
+        type:String,
+        required:true
+    },
     societyId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Society'

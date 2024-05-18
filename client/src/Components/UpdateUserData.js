@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import userRoleContext from "../context/Roles/userRoleContext";
 import MemberContext from "../context/Members/MemberContext";
 import Notification from "../Components/Notification";
+import "./UpdateUserData.css"
 
 const UpdateUserData = () => {
   const { userId } = useContext(userRoleContext);
@@ -121,18 +122,18 @@ const UpdateUserData = () => {
 
 
   return (
-    <div className="container">
+    <div className="container-userdata">
       {Member && (
         <div className="container">
           <h2>Member Details</h2>
           {alert && <Notification type="danger" msg=" Current password is Wrong try agin" onClose={handleCloseNotification} />}
           {alertSucces && <Notification type="success" msg=" Current password is Wrong try agin" onClose={handleCloseNotification} />}
-          <div className="container" style={{ border: "1px solid black" }}>
-            <p className="my-2 px-2" style={{ border: "1px solid black" }}><strong>Name:</strong> {Member.name}</p>
-            <p className="my-2 px-2" style={{ border: "1px solid black" }}><strong>Email:</strong> {Member.email}</p>
-            <p className="my-2 px-2" style={{ border: "1px solid black" }}><strong>Phone:</strong> {Member.phone}</p>
-            <p className="my-2 px-2" style={{ border: "1px solid black" }}><strong>Address:</strong> {Member.Address}</p>
-            <p className="my-2 px-2" style={{ border: "1px solid black" }}><strong>Room No:</strong> {Member.roomNo}</p>
+          <div className="container">
+            <p className="my-2 px-2"><strong>Name:</strong> {Member.name}</p>
+            <p className="my-2 px-2"><strong>Email:</strong> {Member.email}</p>
+            <p className="my-2 px-2"><strong>Phone:</strong> {Member.phone}</p>
+            <p className="my-2 px-2"><strong>Address:</strong> {Member.Address}</p>
+            <p className="my-2 px-2"><strong>Room No:</strong> {Member.roomNo}</p>
             <button type="button" className="btn btn-warning my-2" data-bs-toggle="modal" data-bs-target="#updateModal">
               Update
             </button>

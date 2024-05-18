@@ -1,23 +1,43 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import NoticeContext from '../../context/Notice/NoticeContext';
-import NoteItem from '../../Components/NoticeItem';
+import NoticeItem from '../../Components/NoticeItem';
+import './CreateNotice.css';
 
 const CreateNotice = () => {
   const { Notice, getAllNotices, addNotice, editNotice, deleteNotice } = useContext(NoticeContext);
 
   useEffect(() => {
     getAllNotices();
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
   }, []);
 
-  const [notice, setNotice] = useState({ title: "", description: "", date: "" });
-  const [errors, setErrors] = useState({ title: "", description: "", date: "" });
-  const refClose = useRef(null); // Create a ref for the close button
+  const [notice, setNotice] = useState({ title: "", description: "", date: "", Noticeimage: "" });
+  const [errors, setErrors] = useState({ title: "", description: "", date: "", Noticeimage: "" });
+  const refClose = useRef(null); // Create a ref for the close button                               
+  const fileInputRef = useRef(null); // Create a ref for the file input field
 
   const handleChange = (event) => {
-    setNotice({ ...notice, [event.target.name]: event.target.value });
-    // Clear previous error message when user starts typing
-    setErrors({ ...errors, [event.target.name]: "" });
+    const { name, value, files } = event.target;
+    if (name === "Noticeimage" && files.length > 0) {
+      const file = files[0];
+      convertToBase64(file);
+    } else {
+      setNotice({ ...notice, [name]: value });
+      // Clear previous error message when user starts typing
+      setErrors({ ...errors, [name]: "" });
+    }
+  };
+
+  const convertToBase64 = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setNotice(prevState => ({ ...prevState, Noticeimage: reader.result }));
+      setErrors(prevState => ({ ...prevState, Noticeimage: "" }));
+    };
+    reader.onerror = () => {
+      setErrors(prevState => ({ ...prevState, Noticeimage: "Failed to upload image" }));
+    };
   };
 
   const handleSubmit = () => {
@@ -34,11 +54,22 @@ const CreateNotice = () => {
       setErrors({ ...errors, date: "Date is required" });
       return;
     }
+    if (!notice.Noticeimage) {
+      setErrors({ ...errors, Noticeimage: "Notice image is required" });
+      return;
+    }
 
     // All validations passed, proceed with submission
-    addNotice(notice.title, notice.description, notice.date);
-    setNotice({ title: "", description: "", date: "" });
+    addNotice(notice.title, notice.description, notice.date, notice.Noticeimage);
+    setNotice({ title: "", description: "", date: "", Noticeimage: "" });
+    resetFileInput();
     refClose.current.click(); // Programmatically close the modal after submitting
+  };
+
+  const resetFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; // Reset the value of the file input field to clear the selected file
+    }
   };
 
   // Create a copy of Notice array and then reverse it
@@ -51,7 +82,7 @@ const CreateNotice = () => {
 
         <div>
           {/* Button to open modal */}
-          <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          <button type="button" className="custom-button" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={() => setNotice({ title: "", description: "", date: "", Noticeimage: "" })}>
             Add <i className="fa-regular fa-square-plus"></i>
           </button>
 
@@ -80,6 +111,11 @@ const CreateNotice = () => {
                       <input type="date" className={`form-control ${errors.date && 'is-invalid'}`} id="date" name="date" onChange={handleChange} value={notice.date} />
                       {errors.date && <div className="invalid-feedback">{errors.date}</div>}
                     </div>
+                    <div className="mb-3">
+                      <label htmlFor="Noticeimage" className="col-form-label">Notice image:</label>
+                      <input ref={fileInputRef} type="file" className={`form-control ${errors.Noticeimage && 'is-invalid'}`} id="Noticeimage" name="Noticeimage" onChange={handleChange} />
+                      {errors.Noticeimage && <div className="invalid-feedback">{errors.Noticeimage}</div>}
+                    </div>
                   </form>
                 </div>
                 <div className="modal-footer">
@@ -93,7 +129,7 @@ const CreateNotice = () => {
 
         {!Array.isArray(reversedNotices) || reversedNotices.length === 0 ? 'No notes to display' : (
           reversedNotices.map((notice) => (
-            <NoteItem key={notice._id} Notice={notice} editNotice={editNotice} deleteNotice={deleteNotice} />
+            <NoticeItem key={notice._id} Notice={notice} editNotice={editNotice} deleteNotice={deleteNotice} />
           ))
         )}
       </div>

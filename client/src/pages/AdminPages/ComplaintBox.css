@@ -1,0 +1,50 @@
+.complaint-box-container {
+    padding: 2rem;
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: auto;
+  }
+  
+  .complaint-box-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  
+  .complaint-box-table th, .complaint-box-table td {
+    border: 1px solid #dee2e6;
+    padding: 0.75rem;
+    text-align: left;
+  }
+  
+  .complaint-box-table th {
+    background-color: #004080;
+    color: white;
+  }
+  
+  .complaint-box-button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    color: white;
+  }
+  
+  .complaint-box-button.resolve {
+    background-color: #28a745;
+  }
+  
+  .complaint-box-button.resolve:hover {
+    background-color: #218838;
+  }
+  
+  .complaint-box-button.delete {
+    background-color: #dc3545;
+  }
+  
+  .complaint-box-button.delete:hover {
+    background-color: #c82333;
+  }
+  

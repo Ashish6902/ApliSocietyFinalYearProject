@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './ComplaintBox.css';
 
 const ComplaintBox = () => {
   const [complaints, setComplaints] = useState([]);
@@ -24,9 +25,6 @@ const ComplaintBox = () => {
       console.error('Error fetching complaints:', error);
     }
   };
-  const deletComplaint = ()=>{
-    
-  }
 
   const handleResolveComplaint = async (id) => {
     try {
@@ -52,14 +50,33 @@ const ComplaintBox = () => {
     }
   };
 
+  const deleteComplaint = async (id) => {
+    try {
+      const authToken = localStorage.getItem('authToken');
+      await axios.delete(
+        `http://localhost:5000/api/secretary/deletecomplaint/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'auth-token': authToken,
+          },
+        }
+      );
+      setComplaints(prevComplaints => prevComplaints.filter(complaint => complaint._id !== id));
+    } catch (error) {
+      console.error('Error deleting complaint:', error);
+    }
+  };
+
   return (
-    <div>
+    <div className="complaint-box-container">
       <h2>Complaints</h2>
-      <table>
+      <table className="complaint-box-table">
         <thead>
           <tr>
             <th>Complaint</th>
             <th>Resolve</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -67,10 +84,10 @@ const ComplaintBox = () => {
             <tr key={complaint._id}>
               <td style={{ textDecoration: complaint.isActive ? 'none' : 'line-through' }}>{complaint.Complaint}</td>
               <td>
-                  <button onClick={() => handleResolveComplaint(complaint._id)}>Resolve</button>
+                <button className="complaint-box-button resolve" onClick={() => handleResolveComplaint(complaint._id)}>Resolve</button>
               </td>
               <td>
-              <button onClick={() => deletComplaint(complaint._id)}>Delete</button>
+                <button className="complaint-box-button delete" onClick={() => deleteComplaint(complaint._id)}>Delete</button>
               </td>
             </tr>
           ))}

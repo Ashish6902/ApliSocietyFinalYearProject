@@ -10,13 +10,15 @@ const Notices = () => {
     // eslint-disable-next-line 
   }, []);
 
+  // Create a copy of Notice array and then reverse it
+  const reversedNotices = [...Notice].reverse();
 
   return (
     <>
       <div className="container">
         <h1>Notices</h1>
         {!Array.isArray(Notice) || Notice.length === 0 ? 'No notes to display' : (
-          Notice.map((notice) => (
+          reversedNotices.map((notice) => (
             <NoteItem key={notice._id} Notice={notice} editNotice={editNotice} deleteNotice={deleteNotice}/>
           ))
         )}

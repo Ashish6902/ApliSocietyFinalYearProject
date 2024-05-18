@@ -1,0 +1,56 @@
+.members-container {
+    padding: 2rem;
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  .members-container h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  .add-button {
+    display: inline-block;
+    background-color: #0056b3;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-bottom: 1rem;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .add-button:hover {
+    background-color: #004080;
+  }
+  
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .input-error {
+    border-color: red;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 0.875rem;
+  }
+  

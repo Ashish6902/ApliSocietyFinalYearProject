@@ -56,7 +56,7 @@ const NoticeState = (props) => {
 };
 
   // Add Note 
-  const addNotice = async (title, description, date) => {
+  const addNotice = async (title, description, date,Noticeimage) => {
     // Api call
     const response = await fetch(`${host}/api/secretary/addnotice`, {
         method: 'POST',
@@ -64,8 +64,9 @@ const NoticeState = (props) => {
             'Content-Type': 'application/json',
             'auth-token': authToken
         },
-        body: JSON.stringify({ title, description, date })
+        body: JSON.stringify({ title, description, date,Noticeimage })
     });
+    console.log(Noticeimage)
     const notice = await response.json();
     setNotice([...Notice, notice]);
 }

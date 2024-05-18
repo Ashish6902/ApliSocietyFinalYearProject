@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Notification from '../../Components/Notification';
+import './EmailBroadcast.css';
 
 const EmailBroadcast = () => {
   const [emailSubject, setEmailSubject] = useState('');
@@ -51,7 +52,7 @@ const EmailBroadcast = () => {
   };
 
   return (
-    <div className='container'>
+    <div className="email-broadcast-container">
       {notification && (
         <Notification
           type={notification.type}
@@ -59,10 +60,10 @@ const EmailBroadcast = () => {
           onClose={handleNotificationClose}
         />
       )}
-      <center>
+      <div className="email-broadcast-content">
         <h1>Email Broadcast</h1>
-        <div>
-          <label htmlFor="subject">Subject</label><br/>
+        <div className="email-broadcast-field">
+          <label htmlFor="subject">Subject</label>
           <input
             type="text"
             id="subject"
@@ -71,9 +72,8 @@ const EmailBroadcast = () => {
             placeholder="Enter email subject"
           />
         </div>
-        <br/>
-        <div>
-          <label htmlFor="message">Message</label><br/>
+        <div className="email-broadcast-field">
+          <label htmlFor="message">Message</label>
           <textarea
             id="message"
             value={emailMessage}
@@ -83,9 +83,8 @@ const EmailBroadcast = () => {
             cols={50}
           />
         </div>
-        <br />
-        <button className="btn btn-success" onClick={handleSendEmail}>Send Email</button>
-      </center>
+        <button className="email-broadcast-button" onClick={handleSendEmail}>Send Email</button>
+      </div>
     </div>
   );
 };

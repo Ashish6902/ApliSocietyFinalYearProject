@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import userRoleContext from "../context/Roles/userRoleContext";
 import Notification from './Notification';
+import './Login.css';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -12,7 +13,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const { setRole, setId } = useContext(userRoleContext);
-  const [alert, setAlert] = useState(false); // Use useState hook for alert
+  const [alert, setAlert] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -60,7 +61,7 @@ const Login = () => {
       localStorage.setItem('role', userRole);
       localStorage.setItem('userId', Userid);
     } catch (error) {
-      setAlert(true); // Set alert to true to display the notification
+      setAlert(true);
       console.error('Error:', error.message);
     }
   };
@@ -92,24 +93,23 @@ const Login = () => {
   };
 
   return (
-    <div className='container my-4 border border-secondary p-4 mb-4'>
+    <div className='login-main-container'>
       {alert && <Notification type="danger" msg="Login failed. Please check your credentials." onClose={handleCloseNotification} />}
       {authToken ? (
         <h1>You are already logged in</h1>
       ) : (
-        <div className="container ">
-          <h2>Login</h2>
+        <div className="login-form-container">
+          <center><h2>Login</h2></center>
           <form onSubmit={handleSubmit}>
-            <div className="mb-3">
+            <div className="form-group">
               <label htmlFor="email" className="form-label">Email address</label>
               <input type="email" className="form-control" id="email" name="email" value={formData.email} onChange={handleInputChange} aria-describedby="emailHelp" autoComplete="email" />
-              <div id="emailHelp" className="form-text"></div>
             </div>
-            <div className="mb-3">
+            <div className="form-group">
               <label htmlFor="password" className="form-label">Password</label>
               <input type="password" className="form-control" id="password" name="password" value={formData.password} onChange={handleInputChange} autoComplete="current-password" />
             </div>
-            <button type="submit" className="btn btn-primary">Submit</button>
+            <button type="submit" className="login-btn">Login</button>
           </form>
         </div>
       )}

@@ -1,0 +1,65 @@
+/* Styles for the container */
+.container-userdata {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Styles for member details */
+  .member-details {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .member-details p {
+    margin: 5px 0;
+  }
+  
+  /* Styles for buttons */
+  .btn {
+    margin-right: 10px;
+  }
+  
+  /* Styles for modal content */
+  .modal-content {
+    padding: 20px;
+  }
+  
+  /* Styles for form elements */
+  .form-control {
+    margin-bottom: 10px;
+  }
+  
+  /* Styles for notifications */
+  .notification {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+  }
+  
+  .notification.success {
+    background-color: #28a745;
+    color: #fff;
+  }
+  
+  .notification.error {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  
+  /* Styles for error messages */
+  .invalid-feedback {
+    color: #dc3545;
+    font-size: 0.9rem;
+  }
+  
+  /* Adjustments for modal */
+  .modal {
+    z-index: 1050; /* Ensure modal is above other content */
+  }
+  
+  .modal-backdrop {
+    z-index: 1040; /* Ensure backdrop is behind modal */
+  }
+  

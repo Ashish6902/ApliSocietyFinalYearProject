@@ -1,0 +1,64 @@
+.dashboard-container {
+    padding: 2rem;
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  .dashboard-container h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  .balance-sheet-link {
+    display: inline-block;
+    background-color: #0056b3;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-bottom: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .balance-sheet-link:hover {
+    background-color: #004080;
+  }
+  
+  .funds-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  
+  .table-header {
+    background-color: #0056b3;
+    color: white;
+  }
+  
+  .funds-table th,
+  .funds-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border: 1px solid #ccc;
+  }
+  
+  .funds-table th {
+    background-color: #004080;
+    color: white;
+  }
+  
+  .funds-table tbody tr:nth-child(odd) {
+    background-color: #f2f2f2;
+  }
+  
+  .funds-table tbody tr:hover {
+    background-color: #e6e6e6;
+  }
+  
+  .funds-table tbody tr td {
+    text-align: center;
+  }
+  

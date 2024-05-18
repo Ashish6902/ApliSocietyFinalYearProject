@@ -26,7 +26,7 @@ router.post("/addnotice",fetchuser, checkUserRole('Admin'),
     ],
     async (req, res) => {
       try {
-        const { title, description, date } = req.body;
+        const { title, description, date,Noticeimage } = req.body;
         //check validations
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -36,7 +36,8 @@ router.post("/addnotice",fetchuser, checkUserRole('Admin'),
           title,
           description,
           date,
-          societyId : req.user.societyId
+          societyId : req.user.societyId,
+          Noticeimage 
         });
   
         const saveNotice = await notice.save();
